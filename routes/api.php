@@ -23,5 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/properties', [\App\Http\Controllers\Api\PropertyController::class, 'index'])
     ->name('api.properties.index');
 
+// Agencies (public, no auth required)
+Route::get('/agencies', [\App\Http\Controllers\Api\AgencyController::class, 'index'])
+    ->name('api.agencies.index');
+
 Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
+

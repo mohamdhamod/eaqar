@@ -34,15 +34,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'image' => ['nullable', 'file', 'max:4076', 'mimes:jpg,jpeg,png'],
         ];
 
-        // Add clinic validation rules for doctors
-        if ($user->hasRole(RoleEnum::DOCTOR) && $user->clinic) {
-            $rules['specialty_id'] = ['required', 'integer', 'exists:specialties,id'];
-            $rules['clinic_address'] = ['nullable', 'string', 'max:500'];
-            $rules['clinic_logo'] = ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'];
-            $rules['clinic_services'] = ['nullable', 'array'];
-            $rules['clinic_services.*'] = ['integer', 'exists:clinic_services,id'];
-        }
-
         Validator::make($input, $rules)->validateWithBag('updateProfileInformation');
 
 
@@ -50,34 +41,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => $input['name'],
             'phone' => $input['phone'],
             'email' => $input['email'],
-        
+            'image' => $this->processImage($input['image'] ?? null, $user->image),
         ];
 
         if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill($data)->save();
-        }
-
-        // Update clinic info for doctors
-        if ($user->hasRole(RoleEnum::DOCTOR) && $user->clinic) {
-            $clinicData = [
-                'specialty_id' => $input['specialty_id'] ?? $user->clinic->specialty_id,
-                'address' => $input['clinic_address'] ?? $user->clinic->address,
-            ];
-
-            // Handle clinic logo upload using FileHandler
-            $clinicData['logo'] = $this->processClinicLogo(
-                $input['clinic_logo'] ?? null, 
-                $user->clinic->logo
-            );
-
-            $user->clinic->update($clinicData);
-
-            // Sync clinic services
-            if (isset($input['clinic_services'])) {
-                $user->clinic->services()->sync($input['clinic_services']);
-            }
         }
     }
 
@@ -109,18 +79,5 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             return $this->updateFile($imageFile, $oldImage, 'users',false);
         }
         return $oldImage;
-    }
-
-    /**
-     * Process clinic logo using FileHandler trait.
-     */
-    protected function processClinicLogo($logoFile, $oldLogo)
-    {
-        if (!$oldLogo && $logoFile && $logoFile->isValid() && $logoFile->isFile()) {
-            return $this->storeFile($logoFile, 'clinics/logos');
-        } elseif ($oldLogo && $logoFile && $logoFile->isValid() && $logoFile->isFile()) {
-            return $this->updateFile($logoFile, $oldLogo, 'clinics/logos');
-        }
-        return $oldLogo;
     }
 }

@@ -13,6 +13,7 @@ class Property extends Model implements TranslatableContract
 
     protected $fillable = [
         'user_id',
+        'agency_id',
         'city_id',
         'operation_type_id',
         'property_type_id',
@@ -53,6 +54,11 @@ class Property extends Model implements TranslatableContract
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
     }
 
     public function city()

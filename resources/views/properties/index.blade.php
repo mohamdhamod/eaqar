@@ -23,6 +23,7 @@
     :cities="$filterOptions['cities']"
     :operation-types="$filterOptions['operation_types']"
     :property-types="$filterOptions['property_types']"
+    :agencies="$filterOptions['agencies']"
     :active-filters="$activeFilters"
     form-id="prop-filter-form"
 />
@@ -81,7 +82,15 @@
             active_city: '{{ __('translation.properties.city') }}',
             active_op:   '{{ __('translation.properties.operation_type') }}',
             active_type: '{{ __('translation.properties.property_type') }}',
+            active_agency: '{{ __('translation.properties.agency') }}',
             clear:       '{{ __('translation.common.reset') }}',
+        },
+        // Maps for converting IDs to display names
+        optionsMap: {
+            city_id: @json($filterOptions['cities']->pluck('name', 'id')->toArray()),
+            operation_type_id: @json($filterOptions['operation_types']->pluck('name', 'id')->toArray()),
+            property_type_id: @json($filterOptions['property_types']->pluck('name', 'id')->toArray()),
+            agency_id: @json($filterOptions['agencies']->pluck('name', 'id')->toArray()),
         }
     };
 </script>

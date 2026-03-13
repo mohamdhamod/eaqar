@@ -25,10 +25,6 @@ class RegisterResponse implements RegisterResponseContract
         // Determine redirect based on role
         if ($user->hasRole(RoleEnum::ADMIN)) {
             $redirectUrl = route('dashboard', ['locale' => $locale]);
-        } elseif ($user->hasRole(RoleEnum::DOCTOR)) {
-            $redirectUrl = route('clinic.workspace', ['locale' => $locale]);
-        } elseif ($user->hasRole(RoleEnum::PATIENT)) {
-            $redirectUrl = route('patient.dashboard', ['locale' => $locale]);
         } else {
             $redirectUrl = route('home', ['locale' => $locale]);
         }

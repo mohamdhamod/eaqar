@@ -8,11 +8,12 @@ namespace App\Enums;
 class RoleEnum
 {
     const ADMIN = "Admin";
-    const Client = "Client";
-    
+    const CLIENT = "Client";
+    const AGENT = "Agent";
 
     const ALL = [
         self::ADMIN,
-
+        self::CLIENT,
+        self::AGENT,
     ];
 }

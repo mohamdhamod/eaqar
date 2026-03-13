@@ -50,8 +50,10 @@
         ],
 
         'confirm' => [
+            'delete_message' => __('translation.modal.confirm_delete.message_with_item'),
             'message' => __('translation.modal.confirm_delete.message_with_item'),
-            'activate_message' => __('translation.modal.confirm_activate.message'),
+            'activate_message' => __('translation.modal.confirm_activate.activate_message'),
+            'deactivate_message' => __('translation.modal.confirm_activate.deactivate_message'),
         ],
 
         'toasts' => [
@@ -624,6 +626,95 @@ case 'links':
                     'title_add' => __('translation.vaccination_types.form.title_add'),
                     'btn_update' => __('translation.vaccination_types.form.btn_update'),
                     'btn_save' => __('translation.vaccination_types.form.btn_save'),
+                ],
+            ];
+            break;
+        case 'subscriptions':
+            $i18n_page = [
+                'table' => [
+                    'id' => __('translation.subscription.labels.id'),
+                    'name' => __('translation.subscription.subscription_name'),
+                    'key' => __('translation.subscription.subscription_key'),
+                    'price' => __('translation.subscription.subscription_price'),
+                    'duration' => __('translation.subscription.subscription_duration'),
+                    'max_properties' => __('translation.subscription.subscription_max_properties'),
+                    'icon' => __('translation.subscription.subscription_icon'),
+                    'color' => __('translation.subscription.subscription_color'),
+                    'sort_order' => __('translation.subscription.sort_order'),
+                    'status' => __('translation.subscription.subscription_active'),
+                    'actions' => __('translation.common.actions'),
+                    'created_at' => __('translation.subscription.labels.created_at'),
+                ],
+                'labels' => [
+                    'id' => __('translation.subscription.labels.id'),
+                    'key' => __('translation.subscription.subscription_key'),
+                    'subscription_name' => __('translation.subscription.subscription_name'),
+                    'subscription_description' => __('translation.subscription.subscription_description'),
+                    'subscription_price' => __('translation.subscription.subscription_price'),
+                    'subscription_currency' => __('translation.subscription.subscription_currency'),
+                    'subscription_duration' => __('translation.subscription.subscription_duration'),
+                    'subscription_max_properties' => __('translation.subscription.subscription_max_properties'),
+                    'subscription_icon' => __('translation.subscription.subscription_icon'),
+                    'subscription_color' => __('translation.subscription.subscription_color'),
+                    'sort_order' => __('translation.subscription.sort_order'),
+                    'status' => __('translation.subscription.subscription_active'),
+                    'active' => __('translation.common.active'),
+                    'inactive' => __('translation.common.inactive'),
+                    'created_at' => __('translation.subscription.labels.created_at'),
+                ],
+                'form' => [
+                    'title_edit' => __('translation.subscription.edit_subscription'),
+                    'title_add' => __('translation.subscription.add_subscription'),
+                    'btn_update' => __('translation.common.save'),
+                    'btn_save' => __('translation.common.save'),
+                ],
+                'modal' => [
+                    'confirm_delete' => [
+                        'message_with_item' => __('translation.modal.confirm_delete.message_with_item'),
+                    ],
+                    'confirm_activate' => [
+                        'deactivate_message' => __('translation.modal.confirm_activate.deactivate_message'),
+                        'activate_message' => __('translation.modal.confirm_activate.activate_message'),
+                    ],
+                ],
+            ];
+            break;
+        case 'agencies':
+            $i18n_page = [
+                'labels' => [
+                    'id' => __('translation.common.id'),
+                    'name' => __('translation.common.name'),
+                    'email' => __('translation.common.email'),
+                    'status' => __('translation.common.status'),
+                    'active' => __('translation.common.active'),
+                    'inactive' => __('translation.common.inactive'),
+                    'created_at' => __('translation.common.created_at'),
+                ],
+                'modal' => [
+                    'confirm_activate' => [
+                        'activate_message' => __('translation.modal.confirm_activate.activate_message'),
+                        'deactivate_message' => __('translation.modal.confirm_activate.deactivate_message'),
+                    ],
+                ],
+            ];
+            break;
+        case 'user-subscriptions':
+            $i18n_page = [
+                'labels' => [
+                    'id' => __('translation.common.id'),
+                    'user' => __('translation.common.user'),
+                    'name' => __('translation.common.name'),
+                    'email' => __('translation.common.email'),
+                    'status' => __('translation.common.status'),
+                    'active' => __('translation.common.active'),
+                    'inactive' => __('translation.common.inactive'),
+                    'created_at' => __('translation.common.created_at'),
+                ],
+                'modal' => [
+                    'confirm_activate' => [
+                        'activate_message' => __('translation.modal.confirm_activate.activate_message'),
+                        'deactivate_message' => __('translation.modal.confirm_activate.deactivate_message'),
+                    ],
                 ],
             ];
             break;

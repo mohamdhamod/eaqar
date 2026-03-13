@@ -3,26 +3,33 @@
     $opCode    = $property->operationType?->code ?? '';
     $opName    = $property->operationType?->name ?? '';
     $typeName  = $property->propertyType?->name ?? '';
+    $typeCode  = $property->propertyType?->code ?? '';
     $cityName  = $property->city?->name ?? '';
     $currency  = $property->currency?->name ?? '';
-    $image     = $property->mainImage?->image ?? null;
     $priceNum  = (float) $property->price;
     $price     = number_format($priceNum, 0, '.', ',');
     $url       = route('properties.show', $property->slug);
+    
+    $iconMap = [
+        'apartment'       => 'fa-building',
+        'house'           => 'fa-house',
+        'villa'           => 'fa-gopuram',
+        'land'            => 'fa-mountain',
+        'office'          => 'fa-briefcase',
+        'commercial_shop' => 'fa-shop',
+        'clinic'          => 'fa-hospital',
+        'warehouse'       => 'fa-warehouse',
+        'farm'            => 'fa-leaf',
+    ];
+    $iconClass = $iconMap[$typeCode] ?? 'fa-building';
 @endphp
 
 <article class="prop-card">
-    {{-- Image --}}
+    {{-- Icon instead of image --}}
     <div class="prop-card__img-wrap">
-        <a href="{{ $url }}">
-            @if($image)
-                <img src="{{ $image }}" alt="{{ $property->title }}" class="prop-card__img" loading="lazy">
-            @else
-                <div class="prop-card__img-placeholder">
-                    <i class="bi bi-buildings text-secondary" style="font-size:2.5rem"></i>
-                </div>
-            @endif
-        </a>
+        <div class="prop-card__img-placeholder">
+            <i class="fa-solid {{ $iconClass }} text-secondary" style="font-size:3rem"></i>
+        </div>
 
         {{-- Badges --}}
         <div class="prop-card__badges">
@@ -81,5 +88,19 @@
         @if($typeName)
             <span class="prop-card__type-tag">{{ $typeName }}</span>
         @endif
+    </div>
+
+    {{-- Actions --}}
+    <div class="prop-card__actions">
+        <a href="{{ $url }}" class="prop-card__action-btn prop-card__action-btn--view">
+            <i class="bi bi-eye"></i> {{ __('translation.general.view') }}
+        </a>
+        @auth
+            @if(auth()->id() === $property->user_id)
+                <a href="{{ route('properties.edit', $property) }}" class="prop-card__action-btn prop-card__action-btn--edit">
+                    <i class="bi bi-pencil"></i> {{ __('translation.general.edit') }}
+                </a>
+            @endif
+        @endauth
     </div>
 </article>

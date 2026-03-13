@@ -17,6 +17,13 @@ class PropertyImage extends Model
         'is_main' => 'boolean',
     ];
 
+    protected $appends = ['image_path'];
+
+    public function getImagePathAttribute(): string
+    {
+        return $this->image != null ? asset('storage/' . $this->image) : asset('images/img.png');
+    }
+
     public function property()
     {
         return $this->belongsTo(Property::class);

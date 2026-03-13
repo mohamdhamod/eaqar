@@ -36,6 +36,8 @@
 
             @canany([
                 \App\Enums\PermissionEnum::MANAGE_SPECIALTIES_VIEW,
+                \App\Enums\PermissionEnum::MANAGE_AGENCIES_VIEW,
+                \App\Enums\PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_VIEW,
             ])
                 <li class="side-nav-title mt-3">{{ __('translation.sidebar.specialties') }}</li>
 
@@ -45,12 +47,31 @@
                         <span class="menu-text">{{ __('translation.sidebar.specialties') }}</span>
                     </a>
                 </li>
+
+                @can(\App\Enums\PermissionEnum::MANAGE_AGENCIES_VIEW)
+                    <li class="side-nav-item">
+                        <a href="{{ route('agencies.index') }}" class="side-nav-link {{ request()->routeIs('agencies.*') ? 'active' : '' }}">
+                            <i class="menu-icon bi bi-shop"></i>
+                            <span class="menu-text">{{ __('translation.sidebar.manage_agencies') }}</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can(\App\Enums\PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_VIEW)
+                    <li class="side-nav-item">
+                        <a href="{{ route('user-subscriptions.index') }}" class="side-nav-link {{ request()->routeIs('user-subscriptions.*') ? 'active' : '' }}">
+                            <i class="menu-icon bi bi-credit-card"></i>
+                            <span class="menu-text">{{ __('translation.sidebar.manage_user_subscriptions') }}</span>
+                        </a>
+                    </li>
+                @endcan
             @endcanany
 
             @canany([
                 \App\Enums\PermissionEnum::SETTING_VIEW,
                 \App\Enums\PermissionEnum::MANAGE_ROLES,
                 \App\Enums\PermissionEnum::USERS_VIEW,
+                \App\Enums\PermissionEnum::MANAGE_SUBSCRIPTIONS_VIEW,
             ])
                 <li class="side-nav-title mt-3">{{ __('translation.sidebar.settings') }}</li>
 
@@ -65,6 +86,14 @@
                     </button>
                     <div class="collapse" id="configurationsMenu">
                         <ul class="sub-menu">
+                            @can(\App\Enums\PermissionEnum::MANAGE_SUBSCRIPTIONS_VIEW)
+                                <li class="side-nav-item">
+                                    <a class="side-nav-link" href="{{ route('subscriptions.index') }}">
+                                        <i class="menu-icon bi bi-card-list"></i>
+                                        <span class="menu-text">{{ __('translation.sidebar.subscriptions') }}</span>
+                                    </a>
+                                </li>
+                            @endcan
                             <li class="side-nav-item">
                                 <a href="{{ route('config_titles.index') }}"
                                    class="side-nav-link {{ request()->routeIs('config_titles.index') ? 'active' : '' }}">

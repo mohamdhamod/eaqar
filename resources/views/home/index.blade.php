@@ -55,7 +55,7 @@
 
                             {{-- City --}}
                             <div class="col-md-3">
-                                <select name="city_id" class="form-select">
+                                <select name="city_id" class="form-select select2">
                                     <option value="">{{ __('translation.properties.all_cities') }}</option>
                                     @foreach($filterOptions['cities'] as $city)
                                         <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -65,7 +65,7 @@
 
                             {{-- Property Type --}}
                             <div class="col-md-2">
-                                <select name="property_type_id" class="form-select">
+                                <select name="property_type_id" class="form-select select2">
                                     <option value="">{{ __('translation.properties.all_types') }}</option>
                                     @foreach($filterOptions['property_types'] as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -109,37 +109,42 @@
 </section>
 
 {{-- ================================================
-     FEATURED PROPERTIES
+     BROWSE BY TYPES (Horizontal Scrollable Tags)
      ================================================ --}}
-@if($featuredProperties->isNotEmpty())
-<section class="py-5 bg-body-tertiary">
+<section class="py-5 bg-light">
     <div class="container">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <h2 class="h4 fw-bold mb-1">{{ __('translation.properties.featured_title') }}</h2>
-                <p class="text-muted small mb-0">{{ __('translation.properties.featured_subtitle') }}</p>
-            </div>
-            <a href="{{ route('properties.index') }}" class="btn btn-outline-primary btn-sm">
-                {{ __('translation.properties.view_all') }}
-            </a>
+        <div class="mb-4">
+            <h2 class="h5 fw-bold mb-2">{{ __('translation.properties.browse_by_type') }}</h2>
+            <p class="text-muted small mb-0">{{ __('translation.properties.browse_by_type_sub') }}</p>
         </div>
-
-        {{-- Swiper Carousel --}}
-        <div class="swiper prop-featured-swiper">
-            <div class="swiper-wrapper pb-4">
-                @foreach($featuredProperties as $property)
-                    <div class="swiper-slide">
-                        <x-property-card :property="$property" />
-                    </div>
-                @endforeach
-            </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev prop-swiper-btn"></div>
-            <div class="swiper-button-next prop-swiper-btn"></div>
+        <div class="prop-type-tags custom-scroll flex max-w-full flex-nowrap overflow-x-auto items-center gap-2">
+            @foreach($filterOptions['property_types'] as $type)
+                @php
+                    $icon = match($type->code ?? '') {
+                        'apartment'       => 'fa-building',
+                        'house'           => 'fa-house',
+                        'villa'           => 'fa-gopuram',
+                        'land'            => 'fa-mountain',
+                        'office'          => 'fa-briefcase',
+                        'commercial_shop' => 'fa-shop',
+                        'clinic'          => 'fa-hospital',
+                        'warehouse'       => 'fa-warehouse',
+                        'farm'            => 'fa-leaf',
+                        default           => 'fa-building',
+                    };
+                @endphp
+                <a href="{{ route('properties.index', ['property_type_id' => $type->id]) }}"
+                   class="prop-type-tag d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill border border-1 border-secondary-subtle bg-white text-decoration-none text-body transition-all flex-shrink-0"
+                   title="{{ $type->name }}">
+                    <i class="fa-solid {{ $icon }} text-primary" style="font-size: 1rem"></i>
+                    <span class="small fw-medium">{{ $type->name }}</span>
+                </a>
+            @endforeach
         </div>
     </div>
 </section>
-@endif
+
+
 
 {{-- ================================================
      LATEST PROPERTIES (AJAX)
@@ -169,45 +174,6 @@
                 <i class="bi bi-grid me-2"></i>
                 {{ __('translation.properties.browse_all') }}
             </a>
-        </div>
-    </div>
-</section>
-
-{{-- ================================================
-     BROWSE BY TYPE
-     ================================================ --}}
-<section class="py-5 bg-body-tertiary">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="h4 fw-bold mb-1">{{ __('translation.properties.browse_by_type') }}</h2>
-            <p class="text-muted small">{{ __('translation.properties.browse_by_type_sub') }}</p>
-        </div>
-        <div class="row g-3 justify-content-center">
-            @foreach($filterOptions['property_types'] as $type)
-                @php
-                    $icon = match($type->code ?? '') {
-                        'apartment'       => 'bi-building',
-                        'house'           => 'bi-house-door',
-                        'villa'           => 'bi-houses',
-                        'land'            => 'bi-map',
-                        'office'          => 'bi-briefcase',
-                        'commercial_shop' => 'bi-shop',
-                        'clinic'          => 'bi-hospital',
-                        'warehouse'       => 'bi-archive',
-                        'farm'            => 'bi-tree',
-                        default           => 'bi-building',
-                    };
-                @endphp
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                    <a href="{{ route('properties.index', ['property_type_id' => $type->id]) }}"
-                       class="prop-category-card card text-center border-0 shadow-sm h-100 text-decoration-none">
-                        <div class="card-body py-4">
-                            <i class="bi {{ $icon }} prop-category-card__icon d-block mb-2"></i>
-                            <div class="small fw-semibold text-body">{{ $type->name }}</div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
         </div>
     </div>
 </section>
@@ -278,24 +244,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             const statEl = document.getElementById('stats-total');
             if (statEl && meta) statEl.textContent = meta.total.toLocaleString();
-        });
-    }
-
-    // Init Swiper for featured
-    if (document.querySelector('.prop-featured-swiper') && typeof Swiper !== 'undefined') {
-        new Swiper('.prop-featured-swiper', {
-            slidesPerView: 1,
-            spaceBetween: 16,
-            pagination: { el: '.swiper-pagination', clickable: true },
-            navigation: {
-                nextEl: '.prop-featured-swiper .swiper-button-next',
-                prevEl: '.prop-featured-swiper .swiper-button-prev',
-            },
-            breakpoints: {
-                576:  { slidesPerView: 2 },
-                992:  { slidesPerView: 3 },
-                1200: { slidesPerView: 4 },
-            },
         });
     }
 });

@@ -35,6 +35,21 @@
 
 @include('layout.home.scripts')
 
+{{-- Inline fallback so @stack('scripts') can call window.ensureLeaflet even before app.js (type=module, deferred) executes --}}
+<script>
+window.ensureLeaflet = window.ensureLeaflet || function() {
+    return new Promise(function(resolve, reject) {
+        (function check() {
+            if (typeof window.loadLeaflet === 'function') {
+                window.loadLeaflet().then(resolve).catch(reject);
+            } else {
+                setTimeout(check, 10);
+            }
+        })();
+    });
+};
+</script>
+
 @stack('i18n')
 @stack('scripts')
 

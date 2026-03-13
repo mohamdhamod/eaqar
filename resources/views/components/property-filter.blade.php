@@ -2,6 +2,7 @@
     'cities'         => collect(),
     'operationTypes' => collect(),
     'propertyTypes'  => collect(),
+    'agencies'       => collect(),
     'activeFilters'  => null,
     'formId'         => 'prop-filter-form',
 ])
@@ -68,7 +69,7 @@
             {{-- City --}}
             @if($cities->isNotEmpty())
             <div class="prop-filterbar__select-wrap">
-                <select name="city_id" class="prop-filterbar__select">
+                <select name="city_id" class="prop-filterbar__select select2">
                     <option value="">{{ __('translation.properties.city') }}</option>
                     @foreach($cities as $city)
                     <option value="{{ $city->id }}" {{ $f?->cityId === $city->id ? 'selected' : '' }}>
@@ -76,14 +77,13 @@
                     </option>
                     @endforeach
                 </select>
-                <i class="bi bi-chevron-down prop-filterbar__select-arrow"></i>
             </div>
             @endif
 
             {{-- Property Type --}}
             @if($propertyTypes->isNotEmpty())
             <div class="prop-filterbar__select-wrap">
-                <select name="property_type_id" class="prop-filterbar__select">
+                <select name="property_type_id" class="prop-filterbar__select select2">
                     <option value="">{{ __('translation.properties.property_type') }}</option>
                     @foreach($propertyTypes as $type)
                     <option value="{{ $type->id }}" {{ $f?->propertyTypeId === $type->id ? 'selected' : '' }}>
@@ -91,29 +91,22 @@
                     </option>
                     @endforeach
                 </select>
-                <i class="bi bi-chevron-down prop-filterbar__select-arrow"></i>
             </div>
             @endif
 
-            {{-- Price dropdown --}}
-            <div class="prop-filterbar__dropdown">
-                <button type="button" class="prop-filterbar__dropdown-btn" data-pf-toggle="pf-price-panel">
-                    <i class="bi bi-cash"></i>
-                    <span>{{ __('translation.properties.price_range') }}</span>
-                    <i class="bi bi-chevron-down prop-filterbar__dropdown-chevron"></i>
-                </button>
-                <div class="prop-filterbar__dropdown-panel" id="pf-price-panel">
-                    <div class="prop-filterbar__panel-title">{{ __('translation.properties.price_range') }}</div>
-                    <div class="d-flex gap-2">
-                        <input type="number" name="price_min" class="form-control form-control-sm"
-                               placeholder="{{ __('translation.properties.price_min') }}"
-                               value="{{ $f?->priceMin ?? '' }}" min="0">
-                        <input type="number" name="price_max" class="form-control form-control-sm"
-                               placeholder="{{ __('translation.properties.price_max') }}"
-                               value="{{ $f?->priceMax ?? '' }}" min="0">
-                    </div>
-                </div>
+            {{-- Agencies --}}
+            @if($agencies->isNotEmpty())
+            <div class="prop-filterbar__select-wrap">
+                <select name="agency_id" class="prop-filterbar__select select2">
+                    <option value="">{{ __('translation.properties.agency') }}</option>
+                    @foreach($agencies as $agency)
+                    <option value="{{ $agency->id }}" {{ $f?->agencyId === $agency->id ? 'selected' : '' }}>
+                        {{ $agency->name }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
+            @endif
 
             {{-- More filters --}}
             <button type="button" class="prop-filterbar__more-btn"
@@ -184,10 +177,23 @@
                     </div>
                 </div>
 
+                {{-- Price Range --}}
+                <div class="prop-filterbar__more-group">
+                    <div class="prop-filterbar__more-label">{{ __('translation.properties.price_range') }}</div>
+                    <div class="d-flex gap-2" style="max-width:260px">
+                        <input type="number" name="price_min" class="form-control form-control-sm"
+                               placeholder="{{ __('translation.properties.price_min') }}"
+                               value="{{ $f?->priceMin ?? '' }}" min="0">
+                        <input type="number" name="price_max" class="form-control form-control-sm"
+                               placeholder="{{ __('translation.properties.price_max') }}"
+                               value="{{ $f?->priceMax ?? '' }}" min="0">
+                    </div>
+                </div>
+
                 {{-- Sort --}}
                 <div class="prop-filterbar__more-group">
                     <div class="prop-filterbar__more-label">{{ __('translation.common.sort_by') }}</div>
-                    <select name="sort_by" class="form-select form-select-sm" style="max-width:210px">
+                    <select name="sort_by" class="form-select form-select-sm select2" style="max-width:210px">
                         <option value="latest"     {{ ($f?->sortBy ?? 'latest') === 'latest'     ? 'selected' : '' }}>{{ __('translation.properties.sort_latest') }}</option>
                         <option value="price_asc"  {{ ($f?->sortBy ?? 'latest') === 'price_asc'  ? 'selected' : '' }}>{{ __('translation.properties.sort_price_asc') }}</option>
                         <option value="price_desc" {{ ($f?->sortBy ?? 'latest') === 'price_desc' ? 'selected' : '' }}>{{ __('translation.properties.sort_price_desc') }}</option>

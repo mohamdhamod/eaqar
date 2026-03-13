@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -60,6 +61,38 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->hasRole(RoleEnum::ADMIN);
+    }
+
+    /**
+     * Get user subscriptions.
+     */
+    public function userSubscriptions(): HasMany
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
+
+    /**
+     * Get user's primary agency (if owner).
+     */
+    public function agency(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Agency::class);
+    }
+
+    /**
+     * Get user properties.
+     */
+    public function properties(): HasMany
+    {
+        return $this->hasMany(Property::class);
+    }
+
+    /**
+     * Get user's current active subscription.
+     */
+    public function currentSubscription(): ?UserSubscription
+    {
+        return $this->userSubscriptions()->where('active', true)->first();
     }
 
     /**

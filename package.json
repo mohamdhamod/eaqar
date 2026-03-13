@@ -41,6 +41,7 @@
         "jsvectormap": "^1.7.0",
         "jszip": "^3.10.1",
         "knockout": "^3.5.1",
+        "leaflet": "^1.9.4",
         "lodash": "^4.17.21",
         "os-browserify": "^0.3.0",
         "path-browserify": "^1.0.1",

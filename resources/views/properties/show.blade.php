@@ -2,14 +2,21 @@
 
 @section('page_title', $property->title . ' — ' . config('app.name'))
 
+@push('styles')
+@vite('resources/css/properties.css')
+@endpush
+
 @section('extra_meta')
 <meta name="description" content="{{ Str::limit(strip_tags($property->description ?? ''), 160) }}">
 <meta property="og:title"       content="{{ $property->title }}">
 <meta property="og:description" content="{{ Str::limit(strip_tags($property->description ?? ''), 160) }}">
 @if($property->mainImage)
-<meta property="og:image"       content="{{ $property->mainImage->image }}">
+<meta property="og:image"       content="{{ $property->mainImage->image_path }}">
 @endif
 @endsection
+
+
+
 
 @section('content')
 
@@ -43,7 +50,7 @@
              id="gallery-grid">
             @foreach($images->take(3) as $i => $img)
                 <div class="prop-gallery-grid__item" data-index="{{ $i }}">
-                    <img src="{{ $img->image }}"
+                    <img src="{{ $img->image_path }}"
                          alt="{{ $property->title }}"
                          loading="{{ $loop->first ? 'eager' : 'lazy' }}">
                     @if($i === 2 && $imgCount > 3)
@@ -78,7 +85,7 @@
                     <div class="swiper-wrapper">
                         @foreach($images as $img)
                             <div class="swiper-slide d-flex align-items-center justify-content-center">
-                                <img src="{{ $img->image }}" alt="{{ $property->title }}" loading="lazy">
+                                <img src="{{ $img->image_path }}" alt="{{ $property->title }}" loading="lazy">
                             </div>
                         @endforeach
                     </div>
@@ -270,18 +277,7 @@
                         <h2 class="h6 mb-0 fw-bold">{{ __('translation.properties.location_map') }}</h2>
                     </div>
                     <div class="card-body p-0 overflow-hidden rounded-bottom-3">
-                        <div class="prop-detail__map-placeholder d-flex flex-column align-items-center justify-content-center bg-light py-5">
-                            <i class="bi bi-geo-alt-fill text-danger fs-1 mb-2"></i>
-                            <div class="small text-muted">
-                                {{ $property->latitude }}, {{ $property->longitude }}
-                            </div>
-                            <a href="https://maps.google.com/?q={{ $property->latitude }},{{ $property->longitude }}"
-                               target="_blank" rel="noopener noreferrer"
-                               class="btn btn-sm btn-outline-primary mt-2">
-                                <i class="bi bi-box-arrow-up-right me-1"></i>
-                                {{ __('translation.properties.open_map') }}
-                            </a>
-                        </div>
+                        <div id="propertyMapView" style="height:360px;width:100%;"></div>
                     </div>
                 </div>
             @endif
@@ -443,29 +439,71 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var bsModal = new bootstrap.Modal(modal);
     var swiper = null;
+    var pendingSlide = 0;
+
+    function openGallery(idx) {
+        pendingSlide = idx;
+        bsModal.show();
+    }
 
     grid.querySelectorAll('.prop-gallery-grid__item').forEach(function (item) {
         item.addEventListener('click', function () {
-            var idx = parseInt(item.dataset.index) || 0;
-            bsModal.show();
-            setTimeout(function () {
-                if (!swiper && typeof Swiper !== 'undefined') {
-                    swiper = new Swiper('#gallerySwiper', {
-                        spaceBetween: 10,
-                        navigation: {
-                            nextEl: '#gallerySwiper .swiper-button-next',
-                            prevEl: '#gallerySwiper .swiper-button-prev',
-                        },
-                        pagination: { el: '#gallerySwiper .swiper-pagination', clickable: true },
-                        initialSlide: idx,
-                    });
-                } else if (swiper) {
-                    swiper.slideTo(idx, 0);
-                }
-            }, 200);
+            openGallery(parseInt(item.dataset.index) || 0);
+        });
+    });
+
+    modal.addEventListener('shown.bs.modal', function () {
+        if (swiper) {
+            swiper.slideTo(pendingSlide, 0);
+            return;
+        }
+        var loaderFn = window.loadSwiper || (typeof loadSwiper !== 'undefined' ? loadSwiper : null);
+        if (!loaderFn) return;
+        loaderFn().then(function (loaded) {
+            var Swiper = loaded.Swiper;
+            var modules = loaded.modules;
+            swiper = new Swiper('#gallerySwiper', {
+                modules: [modules.Navigation, modules.Pagination],
+                spaceBetween: 10,
+                initialSlide: pendingSlide,
+                navigation: {
+                    nextEl: '#gallerySwiper .swiper-button-next',
+                    prevEl: '#gallerySwiper .swiper-button-prev',
+                },
+                pagination: { el: '#gallerySwiper .swiper-pagination', clickable: true },
+            });
         });
     });
 });
+</script>
+@endif
+
+@if($property->latitude && $property->longitude)
+<script>
+(function () {
+    const lat = {{ (float) $property->latitude }};
+    const lng = {{ (float) $property->longitude }};
+
+    window.ensureLeaflet().then(function (leaflet) {
+        const L = leaflet.default || leaflet;
+
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconUrl:       '{{ asset('build/assets/marker-icon-hN30_KVU.png') }}',
+            iconRetinaUrl: '{{ asset('build/assets/marker-icon-hN30_KVU.png') }}',
+            shadowUrl:     '{{ asset('build/assets/layers-BWBAp2CZ.png') }}',
+        });
+
+        const map = L.map('propertyMapView', { zoomControl: true, scrollWheelZoom: false }).setView([lat, lng], 14);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri',
+            maxZoom: 19
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup('<strong>{{ addslashes($property->title) }}</strong>@if($property->address)<br><small>{{ addslashes($property->address) }}</small>@endif')
+            .openPopup();
+    });
+})();
 </script>
 @endif
 @endpush

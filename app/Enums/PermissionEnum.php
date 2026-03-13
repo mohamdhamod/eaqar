@@ -30,4 +30,21 @@ class PermissionEnum
     const MANAGE_SPECIALTIES_UPDATE = "Manage specialties Update";
     const MANAGE_SPECIALTIES_DELETE = "Manage specialties Delete";
     const MANAGE_SPECIALTIES_VIEW = "Manage specialties View";
+
+    // Subscriptions Management
+    const MANAGE_SUBSCRIPTIONS = "Manage subscriptions";
+    const MANAGE_SUBSCRIPTIONS_ADD = "Manage subscriptions Add";
+    const MANAGE_SUBSCRIPTIONS_UPDATE = "Manage subscriptions Update";
+    const MANAGE_SUBSCRIPTIONS_DELETE = "Manage subscriptions Delete";
+    const MANAGE_SUBSCRIPTIONS_VIEW = "Manage subscriptions View";
+
+    // Agencies Management
+    const MANAGE_AGENCIES = "Manage agencies";
+    const MANAGE_AGENCIES_VIEW = "Manage agencies View";
+    const MANAGE_AGENCIES_UPDATE = "Manage agencies Update";
+
+    // User Subscriptions Management
+    const MANAGE_USER_SUBSCRIPTIONS = "Manage user subscriptions";
+    const MANAGE_USER_SUBSCRIPTIONS_VIEW = "Manage user subscriptions View";
+    const MANAGE_USER_SUBSCRIPTIONS_UPDATE = "Manage user subscriptions Update";
 }

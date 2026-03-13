@@ -1878,7 +1878,7 @@ const CRUDManager = {
                 itemLabel: data.title || data.key || data.full_name || data.name || '',
                 resourceUrl: arg2 || data.url || '',
                 action: (typeof data.active !== 'undefined') ? (data.active ? 'deactivate' : 'activate') : 'activate',
-                message: i18n.confirm?.message || null,
+                message: null,
                 successMessage: i18n.toasts?.activate_success || null,
                 errorMessage: i18n.toasts?.activate_failed || null,
             };
@@ -1903,7 +1903,17 @@ const CRUDManager = {
         };
 
         if (modal && messageEl && confirmBtn) {
-            const base = opts.message || window.i18n?.confirm?.activate_message || window.i18n?.confirm?.message || '';
+            // Choose the appropriate message based on action
+            let base = opts.message;
+            if (!base) {
+                if (opts.action === 'activate') {
+                    base = window.i18n?.confirm?.activate_message || window.i18n?.modal?.confirm_activate?.activate_message || '';
+                } else if (opts.action === 'deactivate') {
+                    base = window.i18n?.confirm?.deactivate_message || window.i18n?.modal?.confirm_activate?.deactivate_message || '';
+                } else {
+                    base = window.i18n?.confirm?.message || '';
+                }
+            }
             messageEl.textContent = base.replace(':item', opts.itemLabel || '');
             const newBtn = confirmBtn.cloneNode(true);
             if (opts.confirmText) newBtn.textContent = opts.confirmText;

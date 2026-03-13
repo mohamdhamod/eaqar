@@ -123,3 +123,6 @@ if (document.readyState === 'loading') {
 } else {
   initSwipers();
 }
+
+// Expose loadSwiper globally so inline scripts can use it (e.g. property gallery modal)
+window.loadSwiper = loadSwiper;

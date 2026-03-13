@@ -26,6 +26,11 @@ const loadSwal = createLazyLoader(() => import('sweetalert2'));
 const loadQuill = createLazyLoader(() => import('quill'));
 const loadSimpleMDE = createLazyLoader(() => import('easymde'));
 const loadJSVectorMap = createLazyLoader(() => import('jsvectormap'));
+const loadLeaflet = createLazyLoader(() => {
+	// Import CSS first, then the module
+	import('leaflet/dist/leaflet.css');
+	return import('leaflet');
+});
 
 // DataTables v2 can be used without legacy DOM plugins via the DataTable class.
 // Expose it globally for inline scripts.
@@ -45,6 +50,21 @@ window.loadSwal = loadSwal;
 window.loadQuill = loadQuill;
 window.loadSimpleMDE = loadSimpleMDE;
 window.loadJSVectorMap = loadJSVectorMap;
+window.loadLeaflet = loadLeaflet;
+
+// Helper: Wait for a loader to be available, then call it
+window.ensureLeaflet = function() {
+	return new Promise((resolve, reject) => {
+		const check = () => {
+			if (typeof window.loadLeaflet === 'function') {
+				window.loadLeaflet().then(resolve).catch(reject);
+			} else {
+				setTimeout(check, 10);
+			}
+		};
+		check();
+	});
+};
 
 // Create a lightweight proxy for SweetAlert2 so calls like Swal.fire(...) still work and
 // load the real library on demand. The proxy methods return promises where appropriate.

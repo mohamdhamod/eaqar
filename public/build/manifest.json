@@ -7,6 +7,14 @@
       "_vendor-CnHzkViu.js"
     ]
   },
+  "_leaflet-src-BGad45_c.js": {
+    "file": "assets/leaflet-src-BGad45_c.js",
+    "name": "leaflet-src",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CnHzkViu.js"
+    ]
+  },
   "_utils-D71RtZIR.js": {
     "file": "assets/utils-D71RtZIR.js",
     "name": "utils"
@@ -63,6 +71,22 @@
     "src": "node_modules/jsvectormap/dist/jsvectormap.esm.js",
     "isDynamicEntry": true
   },
+  "node_modules/leaflet/dist/images/layers-2x.png": {
+    "file": "assets/layers-2x-Bpkbi35X.png",
+    "src": "node_modules/leaflet/dist/images/layers-2x.png"
+  },
+  "node_modules/leaflet/dist/images/layers.png": {
+    "file": "assets/layers-BWBAp2CZ.png",
+    "src": "node_modules/leaflet/dist/images/layers.png"
+  },
+  "node_modules/leaflet/dist/images/marker-icon.png": {
+    "file": "assets/marker-icon-hN30_KVU.png",
+    "src": "node_modules/leaflet/dist/images/marker-icon.png"
+  },
+  "node_modules/leaflet/dist/leaflet.css": {
+    "file": "assets/leaflet-ht0jc3EZ.css",
+    "src": "node_modules/leaflet/dist/leaflet.css"
+  },
   "node_modules/quill/quill.js": {
     "file": "assets/quill-ChYgufvi.js",
     "name": "quill",
@@ -97,15 +121,29 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-Cee1QtE-.css",
+    "file": "assets/app-CHRVE39U.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
       "app.css"
     ]
   },
+  "resources/css/properties.css": {
+    "file": "assets/properties-G2RfrXf-.css",
+    "src": "resources/css/properties.css",
+    "isEntry": true,
+    "names": [
+      "properties.css"
+    ]
+  },
+  "resources/js/agencies.js": {
+    "file": "assets/agencies-D9Lg6740.js",
+    "name": "agencies",
+    "src": "resources/js/agencies.js",
+    "isEntry": true
+  },
   "resources/js/app.js": {
-    "file": "assets/app-GSL-Dz-9.js",
+    "file": "assets/app-DPb-U2-2.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -121,7 +159,8 @@
       "node_modules/sweetalert2/dist/sweetalert2.esm.all.js",
       "node_modules/quill/quill.js",
       "_easymde-Ca5tH7jq.js",
-      "node_modules/jsvectormap/dist/jsvectormap.esm.js"
+      "node_modules/jsvectormap/dist/jsvectormap.esm.js",
+      "_leaflet-src-BGad45_c.js"
     ],
     "css": [
       "assets/app-4Nq5slOG.css"
@@ -136,7 +175,7 @@
     ]
   },
   "resources/js/properties.js": {
-    "file": "assets/properties-Di2fKVx4.js",
+    "file": "assets/properties-cXdof05j.js",
     "name": "properties",
     "src": "resources/js/properties.js",
     "isEntry": true

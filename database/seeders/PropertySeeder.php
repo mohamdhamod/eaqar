@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\User;
+use App\Traits\FileHandler;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class PropertySeeder extends Seeder
 {
+    use FileHandler;
     /**
      * Property listings data - Syrian cities
      */
@@ -238,11 +241,23 @@ class PropertySeeder extends Seeder
             }
 
             foreach ($images as $imageIndex => $imageUrl) {
+                $storedPath = null;
+                try {
+                    $response = Http::timeout(20)->get($imageUrl);
+                    if ($response->successful()) {
+                        $storedPath = $this->storeImage($response->body(), 'properties', 'jpg');
+                    } else {
+                        $this->command->warn("Failed to download image (HTTP {$response->status()}): {$imageUrl}");
+                    }
+                } catch (\Exception $e) {
+                    $this->command->warn("Could not download image: {$imageUrl} — {$e->getMessage()}");
+                }
+
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'image' => $imageUrl,
-                    'is_main' => $imageIndex === 0,
-                    'sort_order' => $imageIndex,
+                    'image'       => $storedPath,
+                    'is_main'     => $imageIndex === 0,
+                    'sort_order'  => $imageIndex,
                 ]);
             }
         }

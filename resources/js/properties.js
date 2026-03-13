@@ -68,22 +68,38 @@ window.PropertiesAjax = (function () {
     /**
      * Build HTML for a property card matching components/property-card.blade.php
      */
+    /* Get icon class based on property type code */
+    function getPropertyTypeIcon(typeCode) {
+        var icons = {
+            'apartment':       'fa-building',
+            'house':           'fa-house',
+            'villa':           'fa-gopuram',
+            'land':            'fa-mountain',
+            'office':          'fa-briefcase',
+            'commercial_shop': 'fa-shop',
+            'clinic':          'fa-hospital',
+            'warehouse':       'fa-warehouse',
+            'farm':            'fa-leaf',
+        };
+        return icons[typeCode] || 'fa-building';
+    }
+
     function cardHtml(p) {
         var opCode   = (p.operation_type && p.operation_type.code) ? p.operation_type.code : '';
         var opName   = (p.operation_type && p.operation_type.name) ? escHtml(p.operation_type.name) : '';
         var typeName = (p.property_type  && p.property_type.name)  ? escHtml(p.property_type.name)  : '';
+        var typeCode = (p.property_type  && p.property_type.code)  ? p.property_type.code  : '';
         var cityName = (p.city           && p.city.name)           ? escHtml(p.city.name)            : '';
         var currency = (p.currency       && p.currency.name)       ? escHtml(p.currency.name)        : '';
         var address  = p.address  ? escHtml(p.address)  : cityName;
         var title    = p.title    ? escHtml(p.title)    : '';
         var price    = p.price_formatted ? escHtml(p.price_formatted) : '';
         var url      = p.url      ? escHtml(p.url)      : '#';
-        var imgSrc   = p.main_image ? escHtml(p.main_image) : '';
         var created  = p.created_at ? escHtml(p.created_at) : '';
 
-        var imgHtml = imgSrc
-            ? '<img src="' + imgSrc + '" alt="' + title + '" class="prop-card__img" loading="lazy">'
-            : '<div class="prop-card__img-placeholder"><i class="bi bi-buildings text-secondary" style="font-size:2.5rem"></i></div>';
+        /* Icon instead of image */
+        var iconClass = getPropertyTypeIcon(typeCode);
+        var imgHtml = '<div class="prop-card__img-placeholder"><i class="fa-solid ' + iconClass + ' text-secondary" style="font-size:3rem"></i></div>';
 
         /* Badges */
         var leftBadges = '';
@@ -157,9 +173,16 @@ window.PropertiesListing = (function () {
         _currentParams = _readInitialFilters();
 
         _bindFilterForm();
+        _syncFormWithInitialFilters();
         _bindViewToggle();
         _bindLoadMore();
         _bindInfiniteScroll();
+        
+        // Sync with Choices.js after a delay to ensure it's initialized
+        setTimeout(function() {
+            _syncChoicesWithInitialFilters();
+        }, 50);
+        
         _fetchAndRender(_currentParams, 1, false);
     }
 
@@ -167,7 +190,7 @@ window.PropertiesListing = (function () {
     function _readInitialFilters() {
         var init = (window.PROPS_CONFIG && window.PROPS_CONFIG.filters) ? window.PROPS_CONFIG.filters : {};
         var params = {};
-        ['cityId', 'operationTypeId', 'propertyTypeId', 'priceMin', 'priceMax',
+        ['cityId', 'operationTypeId', 'propertyTypeId', 'agencyId', 'priceMin', 'priceMax',
          'areaMin', 'areaMax', 'rooms', 'query', 'sortBy'].forEach(function (k) {
             if (init[k] != null && init[k] !== '') {
                 var apiKey = k.replace(/([A-Z])/g, '_$1').toLowerCase();
@@ -176,6 +199,81 @@ window.PropertiesListing = (function () {
             }
         });
         return params;
+    }
+
+    /* ── sync form fields with initial filters ── */
+    function _syncFormWithInitialFilters() {
+        var form = document.getElementById(_cfg.formId);
+        if (!form) return;
+
+        // Map camelCase DTO keys to form field names
+        var mappings = {
+            'city_id': 'city_id',
+            'operation_type_id': 'operation_type_id',
+            'property_type_id': 'property_type_id',
+            'agency_id': 'agency_id',
+            'q': 'q',
+            'sort_by': 'sort_by',
+            'price_min': 'price_min',
+            'price_max': 'price_max',
+            'area_min': 'area_min',
+            'area_max': 'area_max',
+            'rooms': 'rooms',
+        };
+
+        Object.entries(_currentParams).forEach(function ([paramKey, paramValue]) {
+            if (paramValue == null || paramValue === '') return;
+            
+            var fieldName = mappings[paramKey] || paramKey;
+            var field = form.elements[fieldName];
+            
+            if (!field) return;
+
+            var strValue = String(paramValue);
+
+            if (field.type === 'radio' || field.type === 'checkbox') {
+                form.querySelectorAll('[name="' + fieldName + '"]').forEach(function (el) {
+                    el.checked = (el.value === strValue);
+                });
+            } else if (field.tagName === 'SELECT') {
+                field.value = strValue;
+            } else {
+                field.value = paramValue;
+            }
+        });
+    }
+
+    /* ── sync Choices.js instances with initial filter values ── */
+    function _syncChoicesWithInitialFilters() {
+        var form = document.getElementById(_cfg.formId);
+        if (!form) return;
+
+        var mappings = {
+            'city_id': 'city_id',
+            'operation_type_id': 'operation_type_id',
+            'property_type_id': 'property_type_id',
+            'agency_id': 'agency_id',
+            'sort_by': 'sort_by',
+        };
+
+        Object.entries(_currentParams).forEach(function ([paramKey, paramValue]) {
+            if (paramValue == null || paramValue === '') return;
+            if (!['city_id', 'operation_type_id', 'property_type_id', 'agency_id', 'sort_by'].includes(paramKey)) return;
+            
+            var fieldName = mappings[paramKey] || paramKey;
+            var field = form.elements[fieldName];
+            
+            if (!field || field.tagName !== 'SELECT') return;
+            if (!field._choices) return; // Choices.js not initialized for this element
+
+            var strValue = String(paramValue);
+            try {
+                field._choices.setChoiceByValue(strValue);
+            } catch (e) {
+                // Silently fail if Choices.js method doesn't work as expected
+                console.debug('Choices sync failed for ' + fieldName + ':', e);
+            }
+        });
     }
 
     /* ── bind filter form submit ── */
@@ -369,11 +467,38 @@ window.PropertiesListing = (function () {
         chipsEl.innerHTML = '';
 
         var excluded = ['sort_by', 'page', 'per_page'];
+        var filterNameMap = {
+            'city_id': 'active_city',
+            'operation_type_id': 'active_op',
+            'property_type_id': 'active_type',
+            'agency_id': 'active_agency',
+            'price_min': 'price_range',
+            'price_max': 'price_range',
+            'area_min': 'area_range',
+            'area_max': 'area_range',
+            'rooms': 'rooms_min',
+        };
+
+        var optionsMap = (window.PROPS_CONFIG && window.PROPS_CONFIG.optionsMap) || {};
+
         Object.entries(params).forEach(function ([k, v]) {
             if (!v || excluded.includes(k)) return;
+
             var chip = document.createElement('span');
             chip.className = 'prop-chip';
-            chip.textContent = escHtml(k.replace(/_id$/, '').replace(/_/g, ' ')) + ': ' + escHtml(String(v));
+
+            // Try to get human-readable label
+            var labelKey = filterNameMap[k] || k;
+            var label = cfg(labelKey) || k.replace(/_id$/, '').replace(/_/g, ' ');
+
+            // Try to get friendly value (name instead of ID)
+            var displayValue = v;
+            if (optionsMap[k] && optionsMap[k][v]) {
+                displayValue = optionsMap[k][v];
+            }
+
+            chip.textContent = escHtml(label + ': ' + String(displayValue));
+
             var close = document.createElement('button');
             close.className = 'prop-chip__close ms-1';
             close.innerHTML = '&times;';

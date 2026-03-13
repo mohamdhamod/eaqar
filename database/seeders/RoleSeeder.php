@@ -23,6 +23,8 @@ class RoleSeeder extends Seeder
         // Create roles
         $roles = [
             ["name" => RoleEnum::ADMIN, 'guard_name' => "web"],
+            ["name" => RoleEnum::AGENT, 'guard_name' => "web"],
+            ["name" => RoleEnum::CLIENT, 'guard_name' => "web"],
         ];
 
         foreach ($roles as $role) {
@@ -51,6 +53,23 @@ class RoleSeeder extends Seeder
             ["name" => PermissionEnum::MANAGE_SPECIALTIES_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SPECIALTIES],
             ["name" => PermissionEnum::MANAGE_SPECIALTIES_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SPECIALTIES],
             ["name" => PermissionEnum::MANAGE_SPECIALTIES_DELETE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SPECIALTIES],
+
+            // Subscriptions Management (Admin)
+            ["name" => PermissionEnum::MANAGE_SUBSCRIPTIONS, 'guard_name' => "web", 'page' => ''],
+            ["name" => PermissionEnum::MANAGE_SUBSCRIPTIONS_ADD, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SUBSCRIPTIONS],
+            ["name" => PermissionEnum::MANAGE_SUBSCRIPTIONS_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SUBSCRIPTIONS],
+            ["name" => PermissionEnum::MANAGE_SUBSCRIPTIONS_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SUBSCRIPTIONS],
+            ["name" => PermissionEnum::MANAGE_SUBSCRIPTIONS_DELETE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_SUBSCRIPTIONS],
+
+            // Agencies Management (Admin)
+            ["name" => PermissionEnum::MANAGE_AGENCIES, 'guard_name' => "web", 'page' => ''],
+            ["name" => PermissionEnum::MANAGE_AGENCIES_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_AGENCIES],
+            ["name" => PermissionEnum::MANAGE_AGENCIES_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_AGENCIES],
+
+            // User Subscriptions Management (Admin)
+            ["name" => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS, 'guard_name' => "web", 'page' => ''],
+            ["name" => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS],
+            ["name" => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS],
        ];
 
         foreach ($permissions as $permission) {

@@ -30,16 +30,6 @@ class LoginResponse implements LoginResponseContract
             return redirect(route('dashboard', ['locale' => $locale]));
         }
 
-        // Doctor goes to clinic workspace
-        if ($user->hasRole(RoleEnum::DOCTOR)) {
-            return redirect(route('clinic.workspace', ['locale' => $locale]));
-        }
-
-        // Patient goes to patient dashboard
-        if ($user->hasRole(RoleEnum::PATIENT)) {
-            return redirect(route('patient.dashboard', ['locale' => $locale]));
-        }
-
         // Default fallback
         return redirect(route('home', ['locale' => $locale]));
     }

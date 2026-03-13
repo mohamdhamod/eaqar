@@ -50,8 +50,8 @@ class PropertyResource extends JsonResource
                 'name' => $this->currency->name,
                 'code' => $this->currency->code,
             ]),
-            'main_image'      => $this->whenLoaded('mainImage', fn () => $this->mainImage?->image),
-            'images'          => $this->whenLoaded('images', fn () => $this->images->pluck('image')),
+            'main_image'      => $this->whenLoaded('mainImage', fn () => $this->mainImage?->image_path),
+            'images'          => $this->whenLoaded('images', fn () => $this->images->pluck('image_path')),
             'url'             => route('properties.show', $this->slug),
             'created_at'      => $this->created_at?->diffForHumans(),
         ];

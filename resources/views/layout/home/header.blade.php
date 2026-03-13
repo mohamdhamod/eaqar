@@ -69,6 +69,8 @@
 			<div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-3 w-100">
 				<ul class="navbar-nav {{ $navSpacerClass }} mb-0">
 					<li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('translation.layout.home.nav_home') }}</a></li>
+					<li class="nav-item"><a class="nav-link" href="{{ route('properties.index') }}">{{ __('translation.layout.home.nav_properties') }}</a></li>
+					<li class="nav-item"><a class="nav-link" href="{{ route('public.agencies.index') }}">{{ __('translation.layout.home.nav_agencies') }}</a></li>
 					<li class="nav-item"><a class="nav-link" href="{{ route('about-us.index') }}">{{ __('translation.layout.home.nav_about') }}</a></li>
 				</ul>
 
@@ -92,7 +94,14 @@
 											<span>{{ __('translation.auth.profile') }}</span>
 										</a>
 									</li>
-									<li><hr class="dropdown-divider my-1"></li>
+									@if(auth()->user()->hasRole('Agent') || auth()->user()->hasRole('Client'))
+									<li>
+										<a class="dropdown-item d-flex align-items-center gap-1 rounded-2 py-1 px-2 {{ $dropdownItemFlexClass }}" href="{{ route('agency.index') }}">
+											<i class="fas fa-building fs-6"></i>
+											<span>{{ __('My Agency') }}</span>
+										</a>
+									</li>
+									@endif									<li><hr class="dropdown-divider my-1"></li>
 									<li>
 										<a class="dropdown-item d-flex align-items-center gap-1 rounded-2 py-1 px-2 fw-semibold {{ $dropdownItemFlexClass }}" href="{{ route('logout') }}"
 										   onclick="event.preventDefault();const f=document.getElementById('home-logout-form-desktop'); if(!f) return; if (f.requestSubmit) { f.requestSubmit(); } else { const ev=new Event('submit',{bubbles:true,cancelable:true}); if (f.dispatchEvent(ev)) f.submit(); }">

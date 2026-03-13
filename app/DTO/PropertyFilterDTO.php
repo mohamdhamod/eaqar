@@ -2,12 +2,15 @@
 
 namespace App\DTO;
 
+use Illuminate\Support\Facades\DB;
+
 class PropertyFilterDTO
 {
     public function __construct(
         public readonly ?int    $cityId            = null,
         public readonly ?int    $operationTypeId   = null,
         public readonly ?int    $propertyTypeId    = null,
+        public readonly ?int    $agencyId          = null,
         public readonly ?float  $priceMin          = null,
         public readonly ?float  $priceMax          = null,
         public readonly ?float  $areaMin           = null,
@@ -21,10 +24,14 @@ class PropertyFilterDTO
 
     public static function fromRequest(array $data): self
     {
+        // Use property_type_id directly (property types are stored as Configuration)
+        $propertyTypeId = isset($data['property_type_id']) ? (int) $data['property_type_id'] : null;
+
         return new self(
             cityId:          isset($data['city_id'])            ? (int)   $data['city_id']            : null,
             operationTypeId: isset($data['operation_type_id'])  ? (int)   $data['operation_type_id']  : null,
-            propertyTypeId:  isset($data['property_type_id'])   ? (int)   $data['property_type_id']   : null,
+            propertyTypeId:  $propertyTypeId,
+            agencyId:        isset($data['agency_id'])          ? (int)   $data['agency_id']          : null,
             priceMin:        isset($data['price_min'])          ? (float) $data['price_min']           : null,
             priceMax:        isset($data['price_max'])          ? (float) $data['price_max']           : null,
             areaMin:         isset($data['area_min'])           ? (float) $data['area_min']            : null,
@@ -43,6 +50,7 @@ class PropertyFilterDTO
             'city_id'           => $this->cityId,
             'operation_type_id' => $this->operationTypeId,
             'property_type_id'  => $this->propertyTypeId,
+            'agency_id'         => $this->agencyId,
             'price_min'         => $this->priceMin,
             'price_max'         => $this->priceMax,
             'area_min'          => $this->areaMin,

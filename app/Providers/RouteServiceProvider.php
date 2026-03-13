@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use App\Models\PropertyImage;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,9 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->input('email') ?: $request->ip());
         });
 
+        // Model binding
+        Route::model('image', PropertyImage::class);
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -67,3 +71,4 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 }
+

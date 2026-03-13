@@ -3,9 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Enums\RoleEnum;
-use App\Models\Clinic;
 use App\Models\User;
-use App\Traits\FileHandler;
+use App\Repositories\SubscriptionRepository;
+use App\Services\UserSubscriptionService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -17,10 +17,9 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
-    use FileHandler;
 
     /**
-     * Validate and create a newly registered user.
+     * Validate and create a newly registered user (Client only).
      *
      * @param  array<string, string>  $input
      */
@@ -31,17 +30,8 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
             'term_and_policy' => ['required', 'accepted'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'user_type' => ['required', 'in:doctor,patient'],
+            'phone' => ['required', 'string', 'max:20'],
         ];
-
-        // Add clinic validation rules for doctors
-        if (isset($input['user_type']) && $input['user_type'] === 'doctor') {
-            $rules['specialty_id'] = ['required', 'integer', 'exists:specialties,id'];
-            $rules['clinic_address'] = ['nullable', 'string', 'max:500'];
-            $rules['clinic_services'] = ['nullable', 'array'];
-            $rules['clinic_services.*'] = ['integer', 'exists:clinic_services,id'];
-        }
 
         $validator = Validator::make($input, $rules);
         $validator->validate();
@@ -80,36 +70,27 @@ class CreateNewUser implements CreatesNewUsers
             // Generate random password
             $randomPassword = Str::random(16);
 
-            $userType = $input['user_type'];
-
             $user = User::create([
                 'name' => $input['name'],
                 'email' => $email,
-                'phone' => $input['phone'] ?? null,
+                'phone' => $input['phone'],
                 'password' => $randomPassword,
                 'term_and_policy' => $input['term_and_policy'] ?? 0,
                 'email_verified_at' => now(),
                 'google_id' => $googleId,
             ]);
 
-            // Assign appropriate role
-            $role = $userType === 'doctor' ? RoleEnum::DOCTOR : RoleEnum::PATIENT;
-            $user->assignRole($role);
+            // Assign client role
+            $user->assignRole(RoleEnum::CLIENT);
 
-            // Create clinic for doctor
-            if ($userType === 'doctor') {
-                $clinic = Clinic::create([
-                    'user_id' => $user->id,
-                    'specialty_id' => $input['specialty_id'],
-                    'name' => $input['name'], // استخدام اسم المستخدم كاسم للعيادة
-                    'address' => $input['clinic_address'] ?? null,
-                    'status' => 'pending',
-                ]);
-
-                // Attach services if provided
-                if (!empty($input['clinic_services'])) {
-                    $clinic->services()->attach($input['clinic_services']);
-                }
+            // Assign free subscription to new user
+            try {
+                $subscriptionRepository = resolve(SubscriptionRepository::class);
+                $userSubscriptionService = resolve(UserSubscriptionService::class);
+                $userSubscriptionService->assignFreeSubscriptionToUser($user);
+            } catch (\Exception $e) {
+                // Log subscription assignment error but don't break registration
+                \Log::warning('Failed to assign free subscription to user ' . $user->id . ': ' . $e->getMessage());
             }
 
             DB::table('registration_links')

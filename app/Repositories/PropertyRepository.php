@@ -67,6 +67,10 @@ class PropertyRepository
             $query->where('property_type_id', $dto->propertyTypeId);
         }
 
+        if ($dto->agencyId) {
+            $query->where('agency_id', $dto->agencyId);
+        }
+
         if ($dto->priceMin !== null) {
             $query->where('price', '>=', $dto->priceMin);
         }

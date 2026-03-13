@@ -14,21 +14,19 @@ class HomeController extends Controller
     ) {}
 
     /**
-     * Show the application homepage with featured properties and filter options.
+     * Show the application homepage with filter options.
      */
     public function index(Request $request)
     {
         try {
-            $featuredProperties = $this->propertyService->getFeaturedProperties(8);
-            $filterOptions      = $this->propertyService->getFilterOptions();
+            $filterOptions = $this->propertyService->getFilterOptions();
 
-            return view('home.index', compact('featuredProperties', 'filterOptions'));
+            return view('home.index', compact('filterOptions'));
         } catch (\Exception $e) {
             Log::error('HomeController index error: ' . $e->getMessage());
 
             return view('home.index', [
-                'featuredProperties' => collect([]),
-                'filterOptions'      => ['cities' => collect([]), 'operation_types' => collect([]), 'property_types' => collect([])],
+                'filterOptions' => ['cities' => collect([]), 'operation_types' => collect([]), 'property_types' => collect([])],
             ]);
         }
     }

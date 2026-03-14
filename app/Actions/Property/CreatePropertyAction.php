@@ -5,6 +5,7 @@ namespace App\Actions\Property;
 use App\DTO\PropertyCreateDTO;
 use App\Models\Property;
 use App\Models\PropertyImage;
+use App\Models\User;
 use App\Traits\FileHandler;
 use Illuminate\Support\Str;
 
@@ -59,6 +60,9 @@ class CreatePropertyAction
         if ($dto->images && $dto->images->count() > 0) {
             $this->saveImages($property, $dto->images, $dto->main_image_index);
         }
+
+        // Increment subscription usage
+        User::find($userId)?->currentSubscription()?->incrementUsedProperties();
 
         return $property->load(['images', 'mainImage', 'translations']);
     }

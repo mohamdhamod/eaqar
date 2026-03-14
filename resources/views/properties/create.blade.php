@@ -402,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Replace any existing images[] entries with explicitly appended files
         formData.delete('images[]');
         if (window.propertyUploadedFiles && window.propertyUploadedFiles.length > 0) {
-            window.propertyUploadedFiles.forEach(item => formData.append('images[]', item.file, item.file.name));
+            window.propertyUploadedFiles.forEach(item => formData.append('images[]', item, item.name));
         }
 
         try {

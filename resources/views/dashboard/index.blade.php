@@ -75,20 +75,7 @@
                 </div>
             </div>
 
-            {{-- Specialties --}}
-            <div class="col-sm-6 col-xl-3">
-                <div class="card h-100 border-0 shadow-sm rounded-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="rounded-3 bg-warning bg-opacity-10 p-3">
-                                <i class="bi bi-hospital fs-4 text-warning"></i>
-                            </div>
-                        </div>
-                        <h3 class="fw-bold text-warning mb-1">{{ number_format($statistics['specialties'] ?? 0) }}</h3>
-                        <small class="text-muted">{{ __('translation.dashboard.stats.specialties') }}</small>
-                    </div>
-                </div>
-            </div>
+            
         </div>
 
         {{-- Content Analytics Chart --}}
@@ -223,102 +210,7 @@
             </div>
         </div>
 
-        {{-- Top Specialties & Platform Stats --}}
-        <div class="row g-4 mb-4">
-            {{-- Top Specialties --}}
-            <div class="col-lg-6">
-                <div class="card border-0 shadow-sm rounded-3 h-100">
-                    <div class="card-header bg-transparent border-0">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-hospital text-success"></i>
-                                <h5 class="card-title fw-semibold mb-0">{{ __('translation.dashboard.top_specialties') }}</h5>
-                            </div>
-                            <span class="badge bg-success bg-opacity-10 text-success">{{ __('translation.dashboard.top_badge') }} 5</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        @if(isset($topSpecialties) && $topSpecialties->count() > 0)
-                            <div class="d-flex flex-column gap-3">
-                                @foreach($topSpecialties as $index => $specialty)
-                                    <div class="d-flex align-items-center gap-3 p-3 rounded-3 {{ $index < 3 ? 'bg-light' : '' }}">
-                                        <div class="flex-shrink-0">
-                                            <div class="rounded-2 d-flex align-items-center justify-content-center fw-bold 
-                                                {{ $index === 0 ? 'bg-warning text-white' : ($index === 1 ? 'bg-secondary text-white' : ($index === 2 ? 'bg-danger text-white' : 'bg-light text-muted')) }}" 
-                                                style="width: 32px; height: 32px; font-size: 0.85rem;">
-                                                {{ $index + 1 }}
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div>
-                                                    <div class="fw-semibold">{{ $specialty->name }}</div>
-                                                    <small class="text-muted">{{ $specialty->description ?? '' }}</small>
-                                                </div>
-                                                @if($index === 0)
-                                                    <i class="bi bi-trophy-fill text-warning fs-5"></i>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="text-center py-5">
-                                <i class="bi bi-inbox display-6 text-muted opacity-50"></i>
-                                <p class="text-muted mt-3 mb-0">{{ __('translation.dashboard.no_data') }}</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
-            {{-- Platform Stats --}}
-            <div class="col-lg-6">
-                <div class="card border-0 shadow-sm rounded-3 h-100">
-                    <div class="card-header bg-transparent border-0">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-bar-chart-fill text-primary"></i>
-                                <h5 class="card-title fw-semibold mb-0">{{ __('translation.dashboard.platform_stats') ?? 'Platform Stats' }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-column gap-3">
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-people text-primary"></i>
-                                    <span>{{ __('translation.dashboard.stats.total_users') }}</span>
-                                </div>
-                                <span class="badge bg-primary">{{ $statistics['users'] ?? 0 }}</span>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-globe text-success"></i>
-                                    <span>{{ __('translation.dashboard.stats.countries') }}</span>
-                                </div>
-                                <span class="badge bg-success">{{ $statistics['countries'] ?? 0 }}</span>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-hospital text-warning"></i>
-                                    <span>{{ __('translation.dashboard.stats.specialties') }}</span>
-                                </div>
-                                <span class="badge bg-warning">{{ $statistics['specialties'] ?? 0 }}</span>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-gear text-info"></i>
-                                    <span>{{ __('translation.dashboard.stats.configurations') }}</span>
-                                </div>
-                                <span class="badge bg-info">{{ $statistics['configurations'] ?? 0 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         {{-- Recent Contents & Quick Actions --}}
         <div class="row g-4 mb-4">
@@ -418,16 +310,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-6">
-                                <a href="{{ route('specialties.index') }}" class="text-decoration-none">
-                                    <div class="text-center p-3 rounded-3 bg-warning bg-opacity-10 hover-lift" style="transition: all 0.3s;">
-                                        <div class="rounded-3 bg-warning bg-opacity-25 d-inline-flex p-3 mb-2">
-                                            <i class="bi bi-hospital fs-4 text-warning"></i>
-                                        </div>
-                                        <div class="fw-semibold small text-warning">{{ __('translation.dashboard.specialties') }}</div>
-                                    </div>
-                                </a>
-                            </div>
+                            
                             <div class="col-6">
                                 <a href="{{ route('configurations.index') }}" class="text-decoration-none">
                                     <div class="text-center p-3 rounded-3 bg-secondary bg-opacity-10 hover-lift" style="transition: all 0.3s;">

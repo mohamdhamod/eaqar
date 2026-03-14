@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Configuration;
 use App\Models\Country;
-use App\Models\Specialty;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -34,9 +33,6 @@ class DashboardController extends Controller
         // Chart Data - Last 30 days activity
         $activityChartData = $this->getActivityChartData();
         
-        // Top Specialties
-        $topSpecialties = $this->getTopSpecialties();
-        
         // Recent Users
         $recentUsers = User::latest()
             ->take(5)
@@ -52,7 +48,6 @@ class DashboardController extends Controller
             'statistics',
             'growthStats',
             'activityChartData',
-            'topSpecialties',
             'recentUsers',
             'systemHealth',
             'activityTimeline'
@@ -68,8 +63,6 @@ class DashboardController extends Controller
             'users' => User::count(),
             'countries' => Country::where('is_active', true)->count(),
             'configurations' => Configuration::count(),
-            'specialties' => Specialty::where('active', true)->count(),
-            'today_contents' => User::whereDate('created_at', today())->count(),
             'week_contents' => User::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
             'month_contents' => User::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
         ];
@@ -123,17 +116,6 @@ class DashboardController extends Controller
             'values' => $values,
             'total' => array_sum($values),
         ];
-    }
-
-    /**
-     * Get top specialties
-     */
-    protected function getTopSpecialties(): \Illuminate\Support\Collection
-    {
-        return Specialty::where('active', true)
-            ->ordered()
-            ->take(5)
-            ->get();
     }
 
     /**

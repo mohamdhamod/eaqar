@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'locale' => \App\Http\Middleware\LocaleFromUrl::class,
             'auto.locale' => \App\Http\Middleware\AutoDetectUserLocale::class,
             'recaptcha' => \App\Http\Middleware\VerifyRecaptchaV3::class,
+            'property.subscription' => \App\Http\Middleware\CheckPropertySubscription::class,
         ]);
 
         $middleware->group('web', [

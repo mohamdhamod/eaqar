@@ -8,9 +8,7 @@ use App\Models\ConfigLink;
 use App\Models\ConfigTitle;
 use App\Models\Configuration;
 use App\Models\Country;
-use App\Models\Specialty;
 use App\Observers\CountryObserver;
-use App\Observers\SpecialtyObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -28,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Register observers
-        Specialty::observe(SpecialtyObserver::class);
         Country::observe(CountryObserver::class);
 
         Password::defaults(function () {

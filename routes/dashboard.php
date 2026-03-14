@@ -35,13 +35,16 @@ Route::post('countries/{id?}/updateActiveStatus',[Controllers\Dashboard\CountryC
 
 
 
-// Specialties Management
-Route::resource('specialties', Controllers\Dashboard\SpecialtiesController::class);
-Route::post('specialties/{id?}/updateActiveStatus', [Controllers\Dashboard\SpecialtiesController::class, 'updateActiveStatus'])->name('specialties.updateActiveStatus');
-
 // Subscriptions Management
-Route::resource('subscriptions', Controllers\Dashboard\SubscriptionsController::class);
-Route::post('subscriptions/{id?}/updateActiveStatus', [Controllers\Dashboard\SubscriptionsController::class, 'updateActiveStatus'])->name('subscriptions.updateActiveStatus');
+Route::resource('subscriptions', Controllers\Dashboard\SubscriptionsController::class)->names([
+    'index' => 'manage_subscriptions.index',
+    'create' => 'manage_subscriptions.create',
+    'store' => 'manage_subscriptions.store',
+    'edit' => 'manage_subscriptions.edit',
+    'update' => 'manage_subscriptions.update',
+    'destroy' => 'manage_subscriptions.destroy',
+]);
+Route::post('subscriptions/{id?}/updateActiveStatus', [Controllers\Dashboard\SubscriptionsController::class, 'updateActiveStatus'])->name('manage_subscriptions.updateActiveStatus');
 
 // Agencies Management
 Route::resource('agencies', Controllers\Dashboard\AgenciesController::class)->only(['index']);

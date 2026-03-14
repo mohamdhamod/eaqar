@@ -18,7 +18,9 @@ class AgenciesController extends Controller
         protected UserSubscriptionService $userSubscriptionService
     ) {
         $this->middleware('permission:' . PermissionEnum::MANAGE_AGENCIES_VIEW)->only(['index']);
-        $this->middleware('permission:' . PermissionEnum::MANAGE_AGENCIES_UPDATE)->only(['updateActiveStatus']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_AGENCIES_ADD)->only(['create', 'store']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_AGENCIES_UPDATE)->only(['edit', 'update', 'updateActiveStatus']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_AGENCIES_DELETE)->only(['destroy']);
     }
 
     /**

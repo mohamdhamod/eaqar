@@ -163,6 +163,8 @@ return [
         'image' => 'صورة',
         'save' => 'حفظ',
         'created_at' => 'تاريخ الإنشاء',
+        'updated_at' => 'تاريخ التحديث',
+        'clear_all' => 'مسح الكل',
     ],
 
     
@@ -229,7 +231,7 @@ return [
     ],
     'submit' => 'إرسال',
     'app' => [
-        'name' => 'المنصة الأساسية',
+        'name' => 'عقار',
         'footer_credit' => '© :year :app — بواسطة :author',
     ],
     'auth' => [
@@ -828,9 +830,9 @@ return [
         'users' => 'المستخدمين',
         'roles' => 'الصلاحيات',
         'countries' => 'الدول',
-        'specialties' => 'التخصصات',
         'manage_agencies' => 'إدارة المكاتب',
         'manage_user_subscriptions' => 'اشتراكات المستخدمين',
+        'subscriptions' => 'الاشتراكات',
     ],
     
     'layout' => [
@@ -871,6 +873,7 @@ return [
             'storage_info_html' => 'شركة DevCraft للإبداع والتطوير',
         ],
         'home' => [
+            'my_agency'=>'مكتبتي',
             'brand' => 'المنصة الأساسية',
             'toggle_navigation' => 'تبديل التنقل',
             'nav_home' => 'الرئيسية',
@@ -1081,96 +1084,6 @@ return [
 
 
 
-
-    'specialties' => [
-        'title' => 'التخصصات',
-        'header_title' => 'إدارة التخصصات',
-        'header_description' => 'إنشاء وعرض وتحديث وإدارة التخصصات.',
-
-        'name' => 'الاسم',
-        'key' => 'المفتاح',
-        'icon' => 'الأيقونة',
-        'color' => 'اللون',
-        'description' => 'الوصف',
-        'topics' => 'الموضوعات',
-        'sort_order' => 'ترتيب الفرز',
-        'status' => 'الحالة',
-        'actions' => 'الإجراءات',
-        'active' => 'نشط',
-        'inactive' => 'غير نشط',
-
-        'view' => 'عرض',
-        'edit' => 'تعديل',
-        'delete' => 'حذف',
-        'activate' => 'تفعيل',
-        'deactivate' => 'إلغاء التفعيل',
-
-        'no_specialties_found' => 'لم يتم العثور على تخصصات',
-        'no_specialties_found_message' => 'لا توجد تخصصات متاحة. يمكنك إضافة تخصصات جديدة باستخدام الزر أعلاه.',
-
-        'buttons' => [
-            'new_title' => 'تخصص جديد',
-        ],
-
-        'form' => [
-            'title_add' => 'إضافة تخصص',
-            'title_edit' => 'تعديل التخصص',
-            'btn_save' => 'حفظ التخصص',
-            'btn_update' => 'تحديث التخصص',
-            'btn_cancel' => 'إلغاء',
-            'fields' => [
-                'key' => 'المفتاح',
-                'name' => 'الاسم',
-                'description' => 'الوصف',
-                'icon' => 'الأيقونة',
-                'color' => 'اللون',
-                'sort_order' => 'ترتيب الفرز',
-                'topics' => 'الموضوعات (JSON)',
-            ],
-            'placeholders' => [
-                'key' => 'مثال: dentistry, dermatology',
-                'name' => 'أدخل اسم التخصص',
-                'description' => 'أدخل وصف التخصص',
-                'icon' => 'مثال: fa-tooth, fa-stethoscope',
-                'color' => 'اختر لوناً',
-                'sort_order' => '0',
-                'topics' => '{"en": ["Topic 1", "Topic 2"], "ar": ["الموضوع 1"]}',
-            ],
-            'hints' => [
-                'key' => 'أحرف صغيرة وشرطات سفلية فقط (مثال: dental_care)',
-                'icon' => 'فئة أيقونة Font Awesome (مثال: fa-tooth)',
-                'topics' => 'كائن JSON بمفاتيح محلية ومصفوفات مواضيع',
-            ],
-        ],
-
-        'validation' => [
-            'key_required' => 'مفتاح التخصص مطلوب.',
-            'key_unique' => 'مفتاح التخصص هذا موجود بالفعل.',
-            'key_format' => 'يجب أن يحتوي المفتاح على أحرف صغيرة وشرطات سفلية فقط.',
-            'name_required' => 'اسم التخصص مطلوب.',
-            'color_format' => 'يجب أن يكون اللون صيغة لون سداسية عشرية صالحة (مثال: #4A90D9).',
-        ],
-
-        'labels' => [
-            'id' => 'المعرّف',
-            'key' => 'المفتاح',
-            'name' => 'الاسم',
-            'description' => 'الوصف',
-            'icon' => 'الأيقونة',
-            'color' => 'اللون',
-            'sort_order' => 'ترتيب الفرز',
-            'status' => 'الحالة',
-            'active' => 'نشط',
-            'inactive' => 'غير نشط',
-            'created_at' => 'تاريخ الإنشاء',
-        ],
-
-        'manage_topics' => 'إدارة الموضوعات',
-        'topics_info' => 'يتم إدارة الموضوعات بشكل منفصل. بعد حفظ التخصص، استخدم زر "الموضوعات" في الجدول لإضافة أو تعديل أو حذف الموضوعات.',
-    ],
-
-
-    
 
     'links' => [
         'title' => 'إدارة الروابط',
@@ -1409,8 +1322,10 @@ return [
         'photos'              => 'صور',
         'quick_details'       => 'معلومات سريعة',
         'contact_agent'       => 'التواصل مع المالك',
+        'contact_agency'      => 'التواصل مع المكتب العقاري',
         'owner'               => 'مالك العقار',
         'call_agent'          => 'اتصل الآن',
+        'whatsapp_now'        => 'تواصل عبر واتساب',
         'email_agent'         => 'إرسال بريد',
         'login_to_contact'    => 'سجّل دخولك للتواصل مع المالك.',
         'share'               => 'مشاركة هذا العقار',
@@ -1479,8 +1394,10 @@ return [
         'photos'              => 'صور',
         'quick_details'       => 'معلومات سريعة',
         'contact_agent'       => 'التواصل مع المالك',
+        'contact_agency'      => 'التواصل مع المكتب العقاري',
         'owner'               => 'مالك العقار',
         'call_agent'          => 'اتصل الآن',
+        'whatsapp_now'        => 'تواصل عبر واتساب',
         'email_agent'         => 'إرسال بريد',
         'login_to_contact'    => 'سجّل دخولك للتواصل مع المالك.',
         'share'               => 'مشاركة هذا العقار',

@@ -181,7 +181,7 @@
                     e.preventDefault();
                     const json = this.getAttribute('data-model');
                     const data = JSON.parse(json);
-                    confirmDelete(data, `{{ route('subscriptions.index') }}/${data.id}`, i18n, data.name);
+                    confirmDelete(data, `{{ route('manage_subscriptions.index') }}/${data.id}`, i18n, data.name);
                 });
             });
 
@@ -191,7 +191,7 @@
                     e.preventDefault();
                     const json = this.getAttribute('data-model');
                     const data = JSON.parse(json);
-                    confirmActivate(data, `{{ route('subscriptions.index') }}/${data.id}/updateActiveStatus`, i18n);
+                    confirmActivate(data, `{{ route('manage_subscriptions.index') }}/${data.id}/updateActiveStatus`, i18n);
                 });
             });
 
@@ -243,7 +243,7 @@
             methodInput.value = 'PUT';
 
             // Set form action
-            form.action = `{{ route('subscriptions.index') }}/${data.id}`;
+            form.action = `{{ route('manage_subscriptions.index') }}/${data.id}`;
 
             // Update modal title and button
             if (modalTitle) {
@@ -343,7 +343,7 @@
             }
 
             // Set form action for create
-            form.action = `{{ route('subscriptions.store') }}`;
+            form.action = `{{ route('manage_subscriptions.store') }}`;
 
             // Update modal title and button
             if (modalTitle) {

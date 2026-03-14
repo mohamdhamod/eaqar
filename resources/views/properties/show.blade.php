@@ -288,31 +288,48 @@
         <div class="col-lg-4">
             <div class="sticky-lg-top" style="top: 80px">
 
+                @php
+                    $contactAgency = $property->user?->agency ?: null;
+                    $hasAgency     = $contactAgency && $contactAgency->is_active;
+                @endphp
+
                 {{-- Contact Card --}}
                 <div class="card border-0 shadow-sm mb-3">
                     <div class="card-header bg-body-tertiary py-2">
-                        <h2 class="h6 mb-0 fw-bold">{{ __('translation.properties.contact_agent') }}</h2>
+                        <h2 class="h6 mb-0 fw-bold">
+                            {{ $hasAgency ? __('translation.properties.contact_agency') : __('translation.properties.contact_agent') }}
+                        </h2>
                     </div>
                     <div class="card-body p-3">
                         @if($property->user)
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
                                      style="width:48px;height:48px;font-size:1.2rem">
-                                    {{ mb_substr($property->user->name, 0, 1) }}
+                                    {{ mb_substr($hasAgency ? $contactAgency->name : $property->user->name, 0, 1) }}
                                 </div>
                                 <div>
-                                    <div class="fw-semibold">{{ $property->user->name }}</div>
-                                    <div class="small text-muted">{{ __('translation.properties.owner') }}</div>
+                                    <div class="fw-semibold">{{ $hasAgency ? $contactAgency->name : $property->user->name }}</div>
+                                    <div class="small text-muted">
+                                        {{ $hasAgency ? __('translation.properties.agency') : __('translation.properties.owner') }}
+                                    </div>
                                 </div>
                             </div>
                         @endif
 
                         @auth
-                            @if($property->user?->phone)
-                                <a href="tel:{{ $property->user->phone }}"
-                                   class="btn btn-primary w-100 mb-2">
-                                    <i class="bi bi-telephone-fill me-2"></i>
-                                    {{ __('translation.properties.call_agent') }}
+                            @php
+                                $contactPhone  = $hasAgency
+                                    ? ($contactAgency->phone ?? $property->user?->phone)
+                                    : $property->user?->phone;
+                                $whatsappPhone = preg_replace('/[^0-9]/', '', $contactPhone ?? '');
+                            @endphp
+                            @if($contactPhone)
+                                <a href="https://wa.me/{{ $whatsappPhone }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="btn btn-success w-100 mb-2">
+                                    <i class="bi bi-whatsapp me-2"></i>
+                                    {{ __('translation.properties.whatsapp_now') }}
                                 </a>
                             @endif
                             @if($property->user?->email)

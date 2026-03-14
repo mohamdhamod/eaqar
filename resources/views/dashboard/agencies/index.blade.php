@@ -92,23 +92,23 @@
                                 </a>
                             </td>
                             <td>
-                                <i class="fas fa-map-marker-alt text-muted me-2" style="font-size: 0.85rem;"></i>
+                                <i class="fas fa-map-marker-alt text-muted me-2 d-flex align-items-center justify-content-center" style="font-size: 0.85rem;"></i>
                                 {{ $agency->address ?? '—' }}
                             </td>
                             <td class="text-center">
                                 @if($agency->is_active)
                                     <span class="badge bg-success">
-                                        <i class="fas fa-check-circle me-1"></i>
+                                        <i class="fas fa-check-circle me-1 d-flex align-items-center justify-content-center"></i>
                                         {{ __('translation.common.active') }}
                                     </span>
                                 @else
                                     <span class="badge bg-warning">
-                                        <i class="fas fa-hourglass-half me-1"></i>
+                                        <i class="fas fa-hourglass-half me-1 d-flex align-items-center justify-content-center"></i>
                                         {{ __('translation.common.pending') }}
                                     </span>
                                 @endif
                             </td>
-                            <td class="text-center text-muted small">
+                            <td class="text-center text-muted small d-flex align-items-center justify-content-center">
                                 {{ $agency->created_at->format('d M Y') }}
                             </td>
                             <td class="text-center pe-4">

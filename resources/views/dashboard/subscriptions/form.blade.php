@@ -8,7 +8,7 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="add-form" action="{{ route('subscriptions.store') }}" method="POST">
+            <form class="add-form" action="{{ route('manage_subscriptions.store') }}" method="POST">
                 @csrf
                 <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                     <div class="row">

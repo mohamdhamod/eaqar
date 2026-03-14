@@ -126,7 +126,6 @@ window.AgenciesAjax = (function () {
             + '</div>'
             + '<div class="agency-card__footer">'
             +   '<a href="' + url + '" class="agency-card__cta"><i class="bi bi-grid-3x3-gap"></i> ' + escHtml(lbl('view_properties')) + '</a>'
-            +   (isOwner && editUrl ? '<a href="' + escHtml(editUrl) + '" class="agency-card__cta agency-card__cta--edit"><i class="bi bi-pencil"></i> ' + escHtml(lbl('edit_agency')) + '</a>' : '')
             + '</div>'
             + '</div>';
     }

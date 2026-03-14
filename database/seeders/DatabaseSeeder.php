@@ -22,8 +22,7 @@ class DatabaseSeeder extends Seeder
             ConfigEmailLinkSeeder::class,
             ConfigurationOptionsSeeder::class,
             CountrySeeder::class,
-            
-            SpecialtiesSeeder::class,
+            SubscriptionSeeder::class,
             
             // Real estate seeders
             PropertySeeder::class,

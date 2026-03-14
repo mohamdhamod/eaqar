@@ -40,11 +40,20 @@ class PermissionEnum
 
     // Agencies Management
     const MANAGE_AGENCIES = "Manage agencies";
+    const MANAGE_AGENCIES_ADD = "Manage agencies Add";
     const MANAGE_AGENCIES_VIEW = "Manage agencies View";
     const MANAGE_AGENCIES_UPDATE = "Manage agencies Update";
+    const MANAGE_AGENCIES_DELETE = "Manage agencies Delete";
 
     // User Subscriptions Management
     const MANAGE_USER_SUBSCRIPTIONS = "Manage user subscriptions";
     const MANAGE_USER_SUBSCRIPTIONS_VIEW = "Manage user subscriptions View";
     const MANAGE_USER_SUBSCRIPTIONS_UPDATE = "Manage user subscriptions Update";
+
+    // Properties Management (Agent + Admin)
+    const MANAGE_PROPERTIES = "Manage properties";
+    const MANAGE_PROPERTIES_ADD = "Manage properties Add";
+    const MANAGE_PROPERTIES_VIEW = "Manage properties View";
+    const MANAGE_PROPERTIES_UPDATE = "Manage properties Update";
+    const MANAGE_PROPERTIES_DELETE = "Manage properties Delete";
 }

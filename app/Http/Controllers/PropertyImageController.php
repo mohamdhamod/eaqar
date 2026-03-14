@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\PropertyImageDTO;
+use App\Enums\PermissionEnum;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Http\Requests\PropertyImageRequest;
@@ -15,6 +16,10 @@ class PropertyImageController extends Controller
         private readonly PropertyImageService $service,
     ) {
         $this->middleware('auth');
+        $this->middleware('permission:' . PermissionEnum::MANAGE_PROPERTIES_ADD)->only(['store']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_PROPERTIES_UPDATE)->only(['makeMain']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_PROPERTIES_DELETE)->only(['destroy']);
+        $this->middleware('property.subscription')->only(['store']);
     }
 
     public function store(PropertyImageRequest $request, $lang, Property $property): JsonResponse

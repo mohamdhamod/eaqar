@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\ConfigEnum;
 use App\Models\ConfigTitle;
-use App\Models\Specialty;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -42,11 +41,8 @@ class AboutController extends Controller
             ->get()
             ->keyBy('key');
 
-        $specialties = Specialty::active()->ordered()->get();
-
         return view('about_us.index', [
             'about' => $about,
-            'specialties' => $specialties,
         ]);
     }
 

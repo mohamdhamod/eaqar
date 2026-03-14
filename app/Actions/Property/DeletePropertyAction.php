@@ -3,6 +3,7 @@
 namespace App\Actions\Property;
 
 use App\Models\Property;
+use App\Models\User;
 use App\Traits\FileHandler;
 
 class DeletePropertyAction
@@ -11,6 +12,8 @@ class DeletePropertyAction
 
     public function execute(Property $property): bool
     {
+        $userId = $property->user_id;
+
         // Delete all images and directory
         if ($property->images()->exists()) {
             foreach ($property->images as $image) {
@@ -24,6 +27,8 @@ class DeletePropertyAction
         $property->images()->delete();
 
         // Delete property
-        return $property->delete();
+        $deleted = $property->delete();
+
+        return $deleted;
     }
 }

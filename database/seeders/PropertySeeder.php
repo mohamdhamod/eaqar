@@ -253,12 +253,15 @@ class PropertySeeder extends Seeder
                     $this->command->warn("Could not download image: {$imageUrl} — {$e->getMessage()}");
                 }
 
-                PropertyImage::create([
-                    'property_id' => $property->id,
-                    'image'       => $storedPath,
-                    'is_main'     => $imageIndex === 0,
-                    'sort_order'  => $imageIndex,
-                ]);
+                // Only create PropertyImage if storedPath is not null
+                if ($storedPath) {
+                    PropertyImage::create([
+                        'property_id' => $property->id,
+                        'image'       => $storedPath,
+                        'is_main'     => $imageIndex === 0,
+                        'sort_order'  => $imageIndex,
+                    ]);
+                }
             }
         }
 

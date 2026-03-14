@@ -31,8 +31,11 @@ class AgencyController extends Controller
             return view('agency.form', ['agency' => null]);
         }
 
-        // Load properties for this agency
-        $properties = $agency->properties()->with('propertyType', 'images')->get();
+        // Load properties for this agency, sorted by latest first
+        $properties = $agency->properties()
+            ->orderByDesc('created_at')
+            ->with('propertyType', 'images')
+            ->get();
 
         return view('agency.dashboard', [
             'agency' => $agency,

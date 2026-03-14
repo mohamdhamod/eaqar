@@ -1,20 +1,20 @@
-<footer class="site-footer border-top bg-body mt-5 footer-gradient">
+<footer class="site-footer border-top bg-body footer-gradient">
 	<div class="container py-3">
 		<!-- Mobile Layout -->
 		<div class="d-md-none">
 			<!-- Logo & Description -->
 			<div class="text-center mb-3">
 				<a class="navbar-brand d-inline-flex align-items-center gap-2 mb-2" href="{{ url('/') }}">
-					<img src="{{ $config_images[\App\Enums\ConfigEnum::LOGO]->image_path ?? asset('images/img.png') }}" alt="{{ __('translation.app.name') }}" class="avatar-img rounded-circle" height="40">
+					<img src="{{ $config_images[\App\Enums\ConfigEnum::LOGO]->image_path ?? asset('images/img.png') }}" alt="{{ __('translation.app.name') }}" class="avatar-img rounded-circle" height="100">
 				</a>
-				<p class="text-muted small mb-0 px-3">{{ __('translation.layout.home.footer.about_description') }}</p>
+				<p class="text-muted  mb-0 px-3">{{ __('translation.layout.home.footer.about_description') }}</p>
 			</div>
 			
 			<!-- Contact Info -->
 			@php
 				$infoEmail = $links[\App\Enums\ConfigEnum::INFO_EMAIL]->name ?? null;
 			@endphp
-			<div class="d-flex justify-content-center flex-wrap gap-3 mb-3 small">
+			<div class="d-flex justify-content-center flex-wrap gap-3 mb-3 ">
 				
 				@if($infoEmail)
 				<a class="text-decoration-none text-primary d-flex align-items-center gap-1" href="mailto:{{ $infoEmail }}">
@@ -56,20 +56,20 @@
 			<div class="row g-3 align-items-start">
 				<div class="col-md-3">
 					<a class="navbar-brand d-flex align-items-center gap-2 mb-2" href="{{ url('/') }}">
-						<img src="{{ $config_images[\App\Enums\ConfigEnum::LOGO]->image_path ?? asset('images/img.png') }}" alt="{{ __('translation.app.name') }}" class="avatar-img rounded-circle" height="36">
+						<img src="{{ $config_images[\App\Enums\ConfigEnum::LOGO]->image_path ?? asset('images/img.png') }}" alt="{{ __('translation.app.name') }}" class="avatar-img rounded-circle" height="100">
 					</a>
-					<p class="text-muted small mb-0">{{ __('translation.layout.home.footer.about_description') }}</p>
+					<p class="text-muted  mb-0">{{ __('translation.layout.home.footer.about_description') }}</p>
 				</div>
 				<div class="col-md-2">
-					<h6 class="fw-bold small mb-2">{{ __('translation.layout.home.footer.explore') }}</h6>
-					<ul class="list-unstyled mb-0 small">
+					<h6 class="fw-bold  mb-2">{{ __('translation.layout.home.footer.explore') }}</h6>
+					<ul class="list-unstyled mb-0 ">
 						<li><a class="text-decoration-none text-muted hover-primary" href="{{ route('home') }}">{{ __('translation.layout.home.nav_home') }}</a></li>
 						<li><a class="text-decoration-none text-muted hover-primary" href="{{ route('about-us.index') }}">{{ __('translation.layout.home.footer.about') }}</a></li>
 					</ul>
 				</div>
 				<div class="col-md-3">
-					<h6 class="fw-bold small mb-2">{{ __('translation.layout.home.footer.legal') }}</h6>
-					<ul class="list-unstyled mb-0 small">
+					<h6 class="fw-bold  mb-2">{{ __('translation.layout.home.footer.legal') }}</h6>
+					<ul class="list-unstyled mb-0 ">
 						<li><a class="text-decoration-none text-muted hover-primary" href="{{ route('terms-conditions.index') }}">{{ __('translation.layout.home.footer.terms_conditions') }}</a></li>
 						<li><a class="text-decoration-none text-muted hover-primary" href="{{ route('privacy-policy.index') }}">{{ __('translation.layout.home.footer.privacy_policy') }}</a></li>
 					</ul>
@@ -78,8 +78,8 @@
 					@php
 						$infoEmail = $links[\App\Enums\ConfigEnum::INFO_EMAIL]->name ?? null;
 					@endphp
-					<h6 class="fw-bold small mb-2">{{ __('translation.layout.home.footer.contact') }}</h6>
-					<ul class="list-unstyled mb-2 small">
+					<h6 class="fw-bold  mb-2">{{ __('translation.layout.home.footer.contact') }}</h6>
+					<ul class="list-unstyled mb-2 ">
 					
 						@if($infoEmail)
 						<li>
@@ -112,7 +112,7 @@
 		</div>
 		
 		<hr class="my-2 opacity-25">
-		<div class="d-flex justify-content-center text-muted small">
+		<div class="d-flex justify-content-center text-muted ">
 			<span>{{ __('translation.layout.home.footer.rights', ['year' => date('Y')]) }}</span>
 		</div>
 	</div>

@@ -1,5 +1,7 @@
 @extends('layout.home.main')
 
+@include('modules.i18n', ['page' => 'property'])
+
 @section('page_title', __('translation.property.edit_property') . ' — ' . config('app.name'))
 
 @push('styles')
@@ -314,6 +316,13 @@
                            class="btn btn-outline-secondary w-100 mb-3">
                             {{ __('translation.general.cancel') }}
                         </a>
+                        <hr class="my-2">
+                        <button type="button"
+                                class="btn btn-outline-danger w-100 delete-btn"
+                                data-model='@json($property)'
+                                title="{{ __('translation.property.delete_property') }}">
+                            <i class="fas fa-trash me-2"></i>{{ __('translation.property.delete_property') }}
+                        </button>
                     </div>
                 </div>
 
@@ -380,6 +389,8 @@
         </div>{{-- /row --}}
     </form>
 </div>{{-- /container --}}
+
+@include('modules.confirm')
 @endsection
 
 @push('scripts')
@@ -408,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Replace any existing images[] entries with explicitly appended new image files
         formData.delete('images[]');
         if (window.propertyUploadedFiles && window.propertyUploadedFiles.length > 0) {
-            window.propertyUploadedFiles.forEach(item => formData.append('images[]', item.file, item.file.name));
+            window.propertyUploadedFiles.forEach(item => formData.append('images[]', item, item.name));
         }
 
         try {
@@ -426,6 +437,16 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('{{ __("translation.general.error_occurred") }}');
             if (submitBtn) { submitBtn.disabled = false; }
         }
+    });
+
+    // Delete button handler (confirmation modal)
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const json = this.getAttribute('data-model');
+            const data = JSON.parse(json);
+            confirmDelete(data, `{{ route('properties.index') }}/${data.slug}`, i18n, data.title);
+        });
     });
 });
 </script>

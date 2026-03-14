@@ -5,7 +5,7 @@
         <div class="sidenav-user text-nowrap border border-dashed rounded-3">
             <a href="#" class="sidenav-user-name d-flex align-items-center text-decoration-none">
                 @if(auth()->user()->hasRole(\App\Enums\RoleEnum::ADMIN))
-                    <img src="{{auth()->user()->full_path}}"
+                    <img src="{{auth()->user()->profile_photo_url}}"
                          width="36" alt="{{ __('translation.layout.sidebar.user_image_alt') }}"
                          class="rounded-circle me-2 d-flex">
                 @endif
@@ -35,20 +35,11 @@
             
 
             @canany([
-                \App\Enums\PermissionEnum::MANAGE_SPECIALTIES_VIEW,
                 \App\Enums\PermissionEnum::MANAGE_AGENCIES_VIEW,
                 \App\Enums\PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_VIEW,
             ])
-                <li class="side-nav-title mt-3">{{ __('translation.sidebar.specialties') }}</li>
-
-                <li class="side-nav-item">
-                    <a href="{{ route('specialties.index') }}" class="side-nav-link {{ request()->routeIs('specialties.*') ? 'active' : '' }}">
-                        <i class="menu-icon bi bi-clipboard2-pulse"></i>
-                        <span class="menu-text">{{ __('translation.sidebar.specialties') }}</span>
-                    </a>
-                </li>
-
                 @can(\App\Enums\PermissionEnum::MANAGE_AGENCIES_VIEW)
+                    <li class="side-nav-title mt-3">{{ __('translation.sidebar.manage_agencies') }}</li>
                     <li class="side-nav-item">
                         <a href="{{ route('agencies.index') }}" class="side-nav-link {{ request()->routeIs('agencies.*') ? 'active' : '' }}">
                             <i class="menu-icon bi bi-shop"></i>
@@ -88,7 +79,7 @@
                         <ul class="sub-menu">
                             @can(\App\Enums\PermissionEnum::MANAGE_SUBSCRIPTIONS_VIEW)
                                 <li class="side-nav-item">
-                                    <a class="side-nav-link" href="{{ route('subscriptions.index') }}">
+                                    <a class="side-nav-link" href="{{ route('manage_subscriptions.index') }}">
                                         <i class="menu-icon bi bi-card-list"></i>
                                         <span class="menu-text">{{ __('translation.sidebar.subscriptions') }}</span>
                                     </a>

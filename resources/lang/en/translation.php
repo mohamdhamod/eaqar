@@ -164,6 +164,8 @@ return [
         'image' => 'Image',
         'save' => 'Save',
         'created_at' => 'Creation Date',
+        'updated_at' => 'Update Date',
+        'clear_all' => 'Clear All',
     ],
 
 
@@ -230,7 +232,7 @@ return [
     ],
     'submit' => 'Submit',
     'app' => [
-        'name' => 'Base Platform',
+        'name' => 'Eaqar Platform',
         'footer_credit' => '© :year :app — by :author',
     ],
     'auth' => [
@@ -828,9 +830,9 @@ return [
         'roles' => 'Roles',
         'settings' => 'Settings',
         'countries' => 'Countries',
-        'specialties' => 'Specialties',
         'manage_agencies' => 'Manage Agencies',
         'manage_user_subscriptions' => 'User Subscriptions',
+        'subscriptions' => 'Subscriptions',
     ],
 
     'layout' => [
@@ -871,6 +873,7 @@ return [
             'storage_info_html' => 'DevCraft Company for Creativity and Development',
         ],
         'home' => [
+            'my_agency'=>'My Agency',
             'brand' => 'Base Platform',
             'toggle_navigation' => 'Toggle navigation',
             'nav_home' => 'Home',
@@ -1126,7 +1129,7 @@ return [
                 'topics' => 'Topics (JSON)',
             ],
             'placeholders' => [
-                'key' => 'e.g., dentistry, dermatology',
+                'key' => 'e.g., real-estate, construction',
                 'name' => 'Enter specialty name',
                 'description' => 'Enter specialty description',
                 'icon' => 'e.g., fa-tooth, fa-stethoscope',
@@ -1285,10 +1288,10 @@ return [
             'placeholders' => [
                 'key' => 'Key is auto-generated',
                 'name' => 'Enter country name',
-                'code' => 'Enter country code (e.g., US, LB, FR)',
+                'code' => 'Enter country code (e.g., US, SY, LB)',
             ],
             'hints' => [
-                'code' => 'Use official ISO 3166-1 alpha-2 country code.',
+                'code' => 'Use official ISO 3166-1 alpha-2 country code (e.g., SY for Syria).',
                 'readonly_name' => 'This field is read-only.',
                 'phone_extension' => 'Enter international dialing code starting with +.',
                 'flag' => 'Allowed types: jpg, jpeg, png, svg. Maximum size 4MB.',
@@ -1407,8 +1410,10 @@ return [
         'photos'              => 'Photos',
         'quick_details'       => 'Quick Details',
         'contact_agent'       => 'Contact Owner',
+        'contact_agency'      => 'Contact Real Estate Office',
         'owner'               => 'Property Owner',
         'call_agent'          => 'Call Now',
+        'whatsapp_now'        => 'WhatsApp Now',
         'email_agent'         => 'Send Email',
         'login_to_contact'    => 'Please sign in to contact the owner.',
         'share'               => 'Share this property',
@@ -1447,7 +1452,7 @@ return [
         'agency_name_placeholder'     => 'e.g., Your Office Name',
         'agency_logo'                 => 'Office Logo',
         'agency_address'              => 'Office Address',
-        'agency_address_placeholder'  => 'e.g., Al-Raqqah, Syria',
+        'agency_address_placeholder'  => 'e.g., Al-Raqqa, Syria',
         'logo_recommendation'         => 'Recommended: 300x300px. Max 2MB. PNG or JPEG format',
         'image_preview'               => 'Image preview - click upload when ready',
         'upload_new_logo'             => 'Upload a new image to replace your current logo',
@@ -1581,9 +1586,9 @@ return [
         'image_no'                    => 'Image #',
         'is_main'                     => 'will be marked as main',
         'images_max_size_warn'        => 'The following images exceed 5 MB and were skipped',
-        'title_placeholder'           => 'e.g. Luxury Apartment in Al Olaya',
-        'address_placeholder'         => 'e.g. Al Olaya, Riyadh',
-        'description_placeholder'     => 'Describe the property — location highlights, features, nearby amenities...',
+        'title_placeholder'           => 'e.g. Luxury Apartment in Al-Raqqa',
+        'address_placeholder'         => 'e.g. Al-Raqqa, Syria',
+        'description_placeholder'     => 'Describe the property — location highlights, features, nearby amenities (e.g., close to city center, schools, hospitals)...',
         'validation_errors'           => 'Please fix the following errors',
         'agency_auto_assigned'        => 'Automatically assigned from your account',
         'click_map_to_pin'            => 'Click on the map or drag the marker to set the property location',

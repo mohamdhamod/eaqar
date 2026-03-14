@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Property\GetPropertyBySlugAction;
 use App\DTO\PropertyCreateDTO;
 use App\DTO\PropertyFilterDTO;
+use App\Enums\PermissionEnum;
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
@@ -19,7 +20,12 @@ class PropertyController extends Controller
     public function __construct(
         private readonly PropertyService         $propertyService,
         private readonly GetPropertyBySlugAction $getPropertyBySlugAction,
-    ) {}
+    ) {
+        $this->middleware('permission:' . PermissionEnum::MANAGE_PROPERTIES_ADD)->only(['create', 'store']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_PROPERTIES_UPDATE)->only(['edit', 'update']);
+        $this->middleware('permission:' . PermissionEnum::MANAGE_PROPERTIES_DELETE)->only(['destroy']);
+        $this->middleware('property.subscription')->only(['create', 'store']);
+    }
 
     public function index(Request $request): View
     {
@@ -46,8 +52,8 @@ class PropertyController extends Controller
     public function create(): View
     {
         $filterOptions = $this->propertyService->getFilterOptions();
-        $userAgency = auth()->user()->agency;
-        
+        $userAgency    = auth()->user()->agency;
+
         return view('properties.create', compact('filterOptions', 'userAgency'));
     }
 
@@ -123,8 +129,11 @@ class PropertyController extends Controller
 
         $this->propertyService->deleteProperty($property);
 
-        return redirect()
-            ->back()
-            ->with('success', __('translation.property.deleted_successfully'));
+        return response()->json([
+            'success' => true,
+            'redirect' => route('agency.index'),
+            'message' => __('translation.messages.deleted_successfully')
+        ], 200);
+
     }
 }

@@ -1,7 +1,7 @@
 @extends('layout.home.main')
 @include('layout.extra_meta')
 
-@section('page_title', __('translation.properties.page_title') . ' — ' . config('app.name'))
+@section('page_title', __('translation.properties.page_title') . ' — ' . __('translation.app.name'))
 
 @section('content')
 
@@ -85,6 +85,84 @@
                 </div>
             </div>
         </div>
+
+        {{-- Quick Links Row --}}
+        <div class="row justify-content-center mt-3">
+            <div class="col-lg-9">
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    <a href="{{ route('properties.index') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
+                        <i class="bi bi-building me-2"></i>
+                        {{ __('translation.properties.index_title') }}
+                    </a>
+                    <a href="{{ route('public.agencies.index') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
+                        <i class="bi bi-shop me-2"></i>
+                        {{ __('translation.agencies.page_title') }}
+                    </a>
+                    @auth
+                    
+                        @if(auth()->user()->hasAnyRole(['Admin', 'Agent']))
+                            <a href="{{ route('agency.index') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
+                                <i class="bi bi-house-heart me-2"></i>
+                                {{ __('translation.agency.my_agency_dashboard') }}
+                            </a>
+                        @else
+                            <a href="{{ route('agency.show') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                {{ __('translation.agency.become_agent') }}
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('register.start') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            {{ __('translation.agency.become_agent') }}
+                        </a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .hero-link-btn {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+                border: 2px solid rgba(255, 255, 255, 0.6) !important;
+                border-radius: 8px;
+            }
+
+            .hero-link-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.15);
+                transition: left 0.3s ease;
+                z-index: -1;
+            }
+
+            .hero-link-btn:hover::before {
+                left: 0;
+            }
+
+            .hero-link-btn:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                border-color: rgba(255, 255, 255, 1) !important;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), 
+                            inset 0 0 0 2px rgba(255, 255, 255, 0.3),
+                            0 0 15px rgba(255, 255, 255, 0.3);
+                transform: translateY(-2px);
+            }
+
+            .hero-link-btn i {
+                transition: transform 0.3s ease;
+            }
+
+            .hero-link-btn:hover i {
+                transform: scale(1.15);
+            }
+        </style>
 
         {{-- Stats Row --}}
         <div class="row justify-content-center mt-4">

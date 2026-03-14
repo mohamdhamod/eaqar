@@ -15,7 +15,7 @@
         <script src="https://www.google.com/recaptcha/api.js?render={{ urlencode(config('services.recaptcha_v3.site_key')) }}"></script>
     @endif
 
-    <title>@yield('page_title', config('app.name', 'Laravel'))</title>
+    <title>@yield('page_title', __('translation.app.name'))</title>
     <link rel="icon" type="image/x-icon" href="{{ $config_images[\App\Enums\ConfigEnum::FAVICON]->image_path ?? asset('images/img.png') }}">
     @yield('extra_meta')
     @include('layout.home.styles')

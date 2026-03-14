@@ -32,6 +32,7 @@
 @import 'vendor/quill.css';   /* Quill theme overrides (uses CSS variables) */
 @import 'rtl.css';            /* RTL overrides scoped to [dir="rtl"] */
 @import 'properties.css';    /* Real-estate property components */
+@import 'agencies.css';      /* Agency dashboard and listing styles */
 
 /* Teep modern theme enhancements */
 :root{
@@ -141,7 +142,7 @@ html{scrollbar-gutter: stable;}
 
 /* Home header: compact actions + no layout shift dropdowns */
 @media (max-width: 991.98px){
-   .home-header .home-header-logo{height:40px !important}
+   .home-header .home-header-logo{height:50px !important}
 
    .home-header .home-header-action-dropdown{position:relative}
 

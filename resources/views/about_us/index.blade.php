@@ -66,26 +66,7 @@
                     <h2 class="h4 fw-bold mb-0">{{ $aboutText(\App\Enums\ConfigEnum::ABOUT_US_OFFER_TITLE, 'title') }}</h2>
                 </div>
 
-                <!-- Specialties cards -->
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3">
-        @foreach($specialties as $specialty)
-        <div class="col">
-            <div class="card h-100 text-decoration-none text-body card-hovered border-0 store-category-card">
-                <div class="card-body p-2 p-md-3 text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                        <span class="d-flex align-items-center justify-content-center rounded-circle" 
-                              style="width: 50px; height: 50px; background-color: {{ $specialty->color ?? '#4A90D9' }}20;">
-                            <i class="fas {{ $specialty->icon ?? 'fa-stethoscope' }} fs-4" style="color: {{ $specialty->color ?? '#4A90D9' }};"></i>
-                        </span>
-                    </div>
-                    <h6 class="card-title mb-1">{{ $specialty->name }}</h6>
-                    <p class="card-text text-muted small mb-0">{{ \Illuminate\Support\Str::limit($specialty->description ?? '', 60) }}</p>
-                </div>
-            </div>
-        </div>
-        @endforeach
 
-    </div>
             </section>
 
             <!-- 4) Vision & Mission -->

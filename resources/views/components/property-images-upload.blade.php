@@ -314,11 +314,11 @@
         const valid = [];
         for (const file of files) {
             if (!file.type.startsWith('image/')) {
-                ToastManager.show(`${file.name} — {{ __('translation.validation.image_must_be_image') }}`, 'warning');
+                Toast.show(`${file.name} — {{ __('translation.validation.image_must_be_image') }}`, 'warning');
                 continue;
             }
             if (file.size > MAX_SIZE) {
-                ToastManager.show(`${file.name} — {{ __('translation.validation.images_max_size') }}`, 'danger');
+                Toast.show(`${file.name} — {{ __('translation.validation.images_max_size') }}`, 'danger');
                 continue;
             }
             valid.push(file);
@@ -328,7 +328,7 @@
         window.propertyUploadedFiles.push(...valid);
         renderNewGrid();
         updateSummary();
-        ToastManager.show(`${valid.length} {{ __('translation.property.images_selected') }}`, 'success');
+        Toast.show(`${valid.length} {{ __('translation.property.images_selected') }}`, 'success');
     }
 
     function renderNewGrid() {

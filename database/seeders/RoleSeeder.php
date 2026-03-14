@@ -63,13 +63,22 @@ class RoleSeeder extends Seeder
 
             // Agencies Management (Admin)
             ["name" => PermissionEnum::MANAGE_AGENCIES, 'guard_name' => "web", 'page' => ''],
+            ["name" => PermissionEnum::MANAGE_AGENCIES_ADD, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_AGENCIES],
             ["name" => PermissionEnum::MANAGE_AGENCIES_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_AGENCIES],
             ["name" => PermissionEnum::MANAGE_AGENCIES_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_AGENCIES],
+            ["name" => PermissionEnum::MANAGE_AGENCIES_DELETE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_AGENCIES],
 
             // User Subscriptions Management (Admin)
             ["name" => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS, 'guard_name' => "web", 'page' => ''],
             ["name" => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS],
             ["name" => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_USER_SUBSCRIPTIONS],
+
+            // Properties Management (Agent + Admin)
+            ["name" => PermissionEnum::MANAGE_PROPERTIES, 'guard_name' => "web", 'page' => ''],
+            ["name" => PermissionEnum::MANAGE_PROPERTIES_ADD, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_PROPERTIES],
+            ["name" => PermissionEnum::MANAGE_PROPERTIES_VIEW, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_PROPERTIES],
+            ["name" => PermissionEnum::MANAGE_PROPERTIES_UPDATE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_PROPERTIES],
+            ["name" => PermissionEnum::MANAGE_PROPERTIES_DELETE, 'guard_name' => "web", 'page' => PermissionEnum::MANAGE_PROPERTIES],
        ];
 
         foreach ($permissions as $permission) {
@@ -81,5 +90,16 @@ class RoleSeeder extends Seeder
         $adminRole = Role::whereName(RoleEnum::ADMIN)->first();
         $adminRole->permissions()->detach();
         $adminRole->permissions()->attach($allPermissionIds);
+
+        // Agent gets property management permissions
+        $agentPermissions = Permission::whereIn('name', [
+            PermissionEnum::MANAGE_PROPERTIES,
+            PermissionEnum::MANAGE_PROPERTIES_ADD,
+            PermissionEnum::MANAGE_PROPERTIES_VIEW,
+            PermissionEnum::MANAGE_PROPERTIES_UPDATE,
+            PermissionEnum::MANAGE_PROPERTIES_DELETE,
+        ])->pluck('id')->toArray();
+        $agentRole = Role::whereName(RoleEnum::AGENT)->first();
+        $agentRole->permissions()->syncWithoutDetaching($agentPermissions);
     }
 }

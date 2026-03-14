@@ -112,7 +112,7 @@
                             </a>
                         @endif
                     @else
-                        <a href="{{ route('register') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
+                        <a href="{{ route('login') }}" class="btn btn-sm btn-outline-light text-white hero-link-btn">
                             <i class="bi bi-plus-circle me-2"></i>
                             {{ __('translation.agency.join_us') }}
                         </a>

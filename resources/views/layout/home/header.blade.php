@@ -98,7 +98,7 @@
 									<li>
 										<a class="dropdown-item d-flex align-items-center gap-1 rounded-2 py-1 px-2 {{ $dropdownItemFlexClass }}" href="{{ route('agency.index') }}">
 											<i class="fas fa-building fs-6"></i>
-											<span>{{ __('My Agency') }}</span>
+											<span>{{ __('translation.layout.home.my_agency') }}</span>
 										</a>
 									</li>
 									@endif									<li><hr class="dropdown-divider my-1"></li>

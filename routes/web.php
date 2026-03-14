@@ -36,9 +36,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/properties/{property}/images', [Controllers\PropertyImageController::class, 'store'])->name('property-images.store');
     Route::put('/properties/{property}/images/{image}/main', [Controllers\PropertyImageController::class, 'makeMain'])->name('property-images.make-main');
     Route::delete('/properties/{property}/images/{image}', [Controllers\PropertyImageController::class, 'destroy'])->name('property-images.destroy');
-});
 
-Route::get('/properties/{slug}', [Controllers\PropertyController::class, 'show'])->name('properties.show');
+    // Property Detail Page - Authenticated Users Only
+    Route::get('/properties/{slug}', [Controllers\PropertyController::class, 'show'])->name('properties.show');
+});
 
 Route::middleware(['guest'])->group(function () {
     Route::post('/register/start', [RegisterLinkController::class, 'start'])

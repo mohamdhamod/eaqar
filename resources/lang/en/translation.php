@@ -1520,6 +1520,7 @@ return [
         'no_agencies'                => 'No agencies found',
         'confirm_activate'           => 'Are you sure you want to activate this agency?',
         'confirm_deactivate'         => 'Are you sure you want to deactivate this agency?',
+        'join_us'                    => 'Join Us',
     ],
 
     'property' => [
